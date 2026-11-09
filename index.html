@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Pilates Tracker"><meta name="theme-color" content="#7c3aed">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Polestar Self-Mastery</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&display=swap">
+</head><body>
+<style>
+/* Layout: sticky gradient header, equipment rail, stacked status cards */
+:root{--bg:#fbf4fb;--bg2:#eef6ff;--surface:#ffffff;--fg:#2d2438;--muted:#7a6f86;--line:#ece4f0;--accent:#7c3aed;--accent2:#ec4899;--chip:#f3eff7;
+--done:#dcfce7;--done-edge:#22c55e;--done-ic:#bbf7d0;--prac:#fef9c3;--prac-edge:#eab308;--prac-ic:#fef08a;--todo-ic:#e9e3ff;--skip-ic:#e5e7eb;--thumb:#f4f1fa;
+--font:'Prompt',system-ui,-apple-system,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1622;--bg2:#141a24;--surface:#262031;--fg:#f3eef8;--muted:#b0a5bf;--line:#3a3147;--accent:#a78bfa;--accent2:#f472b6;--chip:#342c40;
+--done:#163a24;--done-edge:#4ade80;--done-ic:#1f5a35;--prac:#3d3510;--prac-edge:#facc15;--prac-ic:#5b4e12;--todo-ic:#3b3354;--skip-ic:#3a3a40;--thumb:#30293c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1622;--bg2:#141a24;--surface:#262031;--fg:#f3eef8;--muted:#b0a5bf;--line:#3a3147;--accent:#a78bfa;--accent2:#f472b6;--chip:#342c40;
+--done:#163a24;--done-edge:#4ade80;--done-ic:#1f5a35;--prac:#3d3510;--prac-edge:#facc15;--prac-ic:#5b4e12;--todo-ic:#3b3354;--skip-ic:#3a3a40;--thumb:#30293c;color-scheme:dark}
+body{font-family:var(--font);background:linear-gradient(160deg,var(--bg),var(--bg2));background-color:var(--bg);color:var(--fg);min-height:100vh}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:#7c3aed}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 24px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:linear-gradient(100deg,#7c3aed,#db2777);color:#fff;padding:14px 16px 12px;border-radius:0 0 18px 18px;margin:0 -4px;box-shadow:0 6px 16px #7c3aed33}
+h1{font-size:19px;margin:0 0 2px;text-wrap:balance}#sum{font-size:13px;opacity:.95;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.bar{background:#ffffff40;border-radius:8px;height:12px;overflow:hidden;display:flex}.g{background:#4ade80}.y{background:#facc15}
+.legend{font-size:11px;margin-top:6px;display:flex;gap:12px;flex-wrap:wrap}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 0 4px}.tabs button{flex:0 0 auto;border:0;border-radius:18px;padding:7px 14px;background:var(--surface);color:var(--accent);font:600 13px var(--font);box-shadow:0 1px 3px #0002;cursor:pointer}
+.tabs button.on{background:var(--accent);color:var(--surface)}
+.eqs{display:flex;gap:8px;overflow-x:auto;padding:8px 0 10px}.eqb{flex:0 0 80px;background:var(--surface);border-radius:14px;padding:6px 4px;text-align:center;font-size:11px;font-weight:600;box-shadow:0 1px 4px #0002;cursor:pointer;border:2px solid transparent}
+.eqb.on{border-color:var(--accent2)}.eqb svg{width:58px;height:58px;display:block;margin:0 auto 4px;background:var(--thumb);border-radius:12px}.eqb small{display:block;color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.filters{display:flex;gap:8px;padding-bottom:4px}select,input,textarea{font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px}
+select,input{padding:8px;flex:1;min-width:0;font-size:14px}
+.card{display:flex;gap:10px;background:var(--surface);margin-top:8px;border-radius:16px;padding:10px;box-shadow:0 2px 6px #0001;border-left:7px solid var(--line)}
+.card.done{background:var(--done);border-left-color:var(--done-edge)}.card.prac{background:var(--prac);border-left-color:var(--prac-edge)}.card.skip{opacity:.5}
+.ic{flex:0 0 58px}.ic svg{width:58px;height:58px;display:block}.bd{flex:1;min-width:0}
+.t{font-weight:700;font-size:14px;line-height:1.35}.eq{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.02em}
+.badge{float:right;font-size:11px;padding:2px 8px;border-radius:10px;background:var(--chip);color:var(--muted);margin-left:6px}
+.done .badge{background:var(--done-edge);color:#08310f}.prac .badge{background:var(--prac-edge);color:#3a2c00}
+.row{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}.chip{border:0;border-radius:14px;padding:6px 10px;background:var(--chip);color:var(--fg);font:500 12px var(--font);cursor:pointer}
+.chip.on{background:var(--done-edge);color:#08310f}.chip.p{background:var(--prac-edge);color:#3a2c00}.chip.sk.on{background:var(--muted);color:var(--surface)}
+.chip:focus-visible,.tabs button:focus-visible,.eqb:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+.pr{font-size:11px;color:var(--muted);margin-top:5px}.pr a{color:var(--accent)}
+textarea{width:100%;box-sizing:border-box;margin-top:6px;font-size:12px;padding:5px 7px;resize:vertical}
+.empty{text-align:center;color:var(--muted);padding:20px}
+.foot{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding-top:18px}.foot button{border:1px solid var(--line);border-radius:12px;padding:8px 14px;background:var(--surface);color:var(--fg);font:500 13px var(--font);cursor:pointer}
+#panel{position:fixed;inset:0;background:#0007;z-index:20;display:flex;align-items:flex-end;justify-content:center}
+#panel .sheet{background:var(--surface);width:100%;max-width:520px;border-radius:18px 18px 0 0;padding:18px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:10px}
+#panel h2{margin:0;font-size:17px}#pnote,#pmsg{font-size:13px;color:var(--muted);margin:0}#pmsg{color:var(--accent2)}#pdata{height:110px;font-size:11px}
+.acts{display:flex;gap:8px;justify-content:flex-end}.acts button{border:0;border-radius:10px;padding:9px 16px;font:600 14px var(--font);cursor:pointer;background:var(--chip);color:var(--fg)}#pok{background:var(--accent);color:var(--surface)}
+
+.hero{background:linear-gradient(120deg,#7c3aed,#db2777);color:#fff;border-radius:0 0 22px 22px;margin:0 -4px;padding:22px 18px 18px;display:flex;align-items:center;gap:14px}
+.av{flex:0 0 56px;height:56px;border-radius:50%;background:#ffffff33;display:grid;place-items:center;font:700 24px var(--font)}
+.hero h1{font-size:21px;margin:0}.hero p{margin:2px 0 0;font-size:13px;opacity:.9}.hero button{margin-left:auto;align-self:flex-start;border:0;background:#ffffff2e;color:#fff;border-radius:10px;padding:6px 10px;font:500 12px var(--font);cursor:pointer}
+.panel2{background:var(--surface);border-radius:18px;padding:16px;margin-top:14px;box-shadow:0 2px 8px #0001}
+.panel2 h2{font-size:15px;margin:0 0 12px}
+.overall{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.donut{position:relative;width:150px;height:150px;flex:0 0 150px}.donut svg{width:150px;height:150px;transform:rotate(-90deg)}
+.donut .mid{position:absolute;inset:0;display:grid;place-content:center;text-align:center}.donut b{font-size:30px;font-variant-numeric:tabular-nums}.donut span{font-size:12px;color:var(--muted)}
+.stats{display:grid;gap:8px;flex:1;min-width:150px}.stat{display:flex;align-items:center;gap:8px;font-size:14px}.stat i{width:12px;height:12px;border-radius:4px}.stat b{margin-left:auto;font-variant-numeric:tabular-nums}
+.secrow{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:10px 0;border-top:1px solid var(--line);cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left;color:var(--fg);font:inherit}
+.secrow:first-of-type{border-top:0}.secrow .n{font-weight:600;font-size:14px}.secrow .pc{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+.secrow .sb{grid-column:1/-1;height:10px;border-radius:6px;background:var(--chip);overflow:hidden;display:flex}.secrow small{grid-column:1/-1;color:var(--muted);font-size:11px}
+.secrow:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;border-radius:8px}
+.reg{background:var(--surface);border-radius:20px;padding:22px 18px;margin-top:40px;box-shadow:0 4px 16px #7c3aed22;display:flex;flex-direction:column;gap:12px}
+.reg h1{margin:0;font-size:22px;color:var(--accent)}.reg p{margin:0;color:var(--muted);font-size:14px}.reg label{font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:5px}
+.reg input{flex:none}.reg button,.back{border:0;border-radius:12px;padding:11px;background:linear-gradient(100deg,#7c3aed,#db2777);color:#fff;font:600 15px var(--font);cursor:pointer}
+.back{padding:5px 10px;font-size:12px;background:#ffffff2e;float:right}
+
+.corgi-reg{width:96px;margin:-62px auto 0;display:block;background:var(--surface);border-radius:50%;padding:8px;box-shadow:0 4px 12px #7c3aed33}
+.hero .av{background:#fff;padding:4px;box-sizing:border-box}.hero .av svg{width:100%;height:100%}
+.hdr-corgi{position:absolute;right:14px;bottom:2px;width:38px;pointer-events:none}
+header{position:sticky}header .hc{position:relative}
+.walker{display:flex;justify-content:center;padding-top:12px}.walker svg{width:64px}
+.empty svg{width:70px;display:block;margin:0 auto 6px}
+
+.examcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:0;background:none;padding:0;cursor:pointer;font:inherit;color:var(--fg)}
+.cd{flex:0 0 74px;height:74px;border-radius:18px;background:linear-gradient(140deg,#7c3aed,#db2777);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cd b{font-size:26px;line-height:1;font-variant-numeric:tabular-nums}.cd span{font-size:11px;margin-top:3px}
+.examcard .ex{flex:1;min-width:0}.examcard .ex b{display:block;font-size:15px}.examcard .ex small{color:var(--muted);font-size:12px}.examcard .go{color:var(--accent);font-weight:700}
+.ehead{background:linear-gradient(100deg,#7c3aed,#db2777);color:#fff;border-radius:0 0 18px 18px;margin:0 -4px;padding:14px 16px}
+.ehead h1{font-size:19px;margin:0 0 10px}.erow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.erow label{font-size:13px;display:flex;flex-direction:column;gap:4px}.erow input{flex:none;background:#fff;color:#2d2438;border:0}
+.ecd{margin-left:auto;text-align:right}.ecd b{font-size:28px;font-variant-numeric:tabular-nums;display:block;line-height:1}.ecd span{font-size:12px}
+.ebar{margin-top:10px}.ebar small{display:block;font-size:12px;margin-bottom:4px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.tools button{border:0;border-radius:12px;padding:9px 14px;font:600 13px var(--font);cursor:pointer;background:var(--surface);color:var(--accent);box-shadow:0 1px 3px #0002}
+.tools button.pri{background:var(--accent);color:var(--surface)}
+.eitem{display:flex;gap:10px;align-items:center;background:var(--surface);border-radius:14px;padding:8px 10px;margin-top:8px;border-left:6px solid var(--prac-edge)}
+.eitem.rd{border-left-color:var(--done-edge);background:var(--done)}.eitem .ic{flex:0 0 44px}.eitem .ic svg{width:44px;height:44px}
+.eitem .bd small{display:block;color:var(--muted);font-size:11px}.eitem .x{border:0;background:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px}
+.pick{background:var(--surface);border-radius:16px;padding:12px;margin-top:12px;box-shadow:0 2px 8px #0001}.pick select{width:100%;flex:none;margin-bottom:8px}
+.pick label{display:flex;gap:8px;align-items:flex-start;padding:7px 2px;border-top:1px solid var(--line);font-size:13px}.pick label:first-of-type{border-top:0}
+.pick label small{color:var(--muted);display:block;font-size:11px;margin-top:3px}.pick label input{flex:none;margin-top:3px;width:18px;height:18px}.pick label .pn{flex:1;min-width:0;text-align:right}.pick label .sp{margin-left:6px;min-width:62px;text-align:center}.picklist{max-height:320px;overflow-y:auto}
+.sp{display:inline-block;font-size:10px;font-weight:600;padding:1px 7px;border-radius:8px;margin-left:4px;vertical-align:1px}.sp.done{background:#22c55e;color:#fff}.sp.prac{background:#facc15;color:#3a2c00}.sp.todo{background:#ef4444;color:#fff}
+#copyout{margin-top:10px;min-height:150px;font-size:12px}#copymsg{font-size:12px;color:var(--accent2);margin:6px 0 0}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<div class="wrap">
+<section id="vreg" hidden><form class="reg" id="regf"><span id="regc"></span><h1>ยินดีต้อนรับ</h1><p>ลงทะเบียนครั้งแรกเพื่อเริ่มติดตามการฝึก Polestar Self-Mastery</p>
+<label for="rname">ชื่อของคุณ<input id="rname" required placeholder="เช่น แบงค์"></label>
+<label for="rstudio">สตูดิโอ / รุ่น (ไม่ใส่ก็ได้)<input id="rstudio" placeholder="เช่น Comprehensive 2026"></label>
+<button type="submit">เริ่มใช้งาน</button></form></section>
+<section id="vhome" hidden><div class="hero"><div class="av" id="hav"></div><div><h1 id="hname"></h1><p id="hstudio"></p></div><button onclick="editProfile()">แก้ไข</button></div>
+<div class="panel2"><button class="examcard" onclick="show('exam')"><span class="cd"><b id="hcd">–</b><span id="hcdl">วัน</span></span><span class="ex"><b>เตรียมสอบครั้งต่อไป</b><small id="hexs"></small></span><span class="go">›</span></button></div>
+<div class="panel2"><h2>ภาพรวมทั้งหมด</h2><div class="overall"><div class="donut"><svg viewBox="0 0 42 42" id="dn"></svg><div class="mid"><b id="dpc"></b><span>สอบผ่าน</span></div></div>
+<div class="stats" id="dstats"></div></div></div>
+<div class="panel2"><h2>แต่ละหมวด</h2><div id="secs"></div></div><div class="walker" id="walk"></div></section>
+<section id="vdet" hidden>
+<header><button class="back" onclick="show('home')">หน้าแรก</button><h1>Polestar Self-Mastery</h1><div id="sum"></div><div class="bar" id="bar"></div>
+<div class="legend"><span><i style="background:#4ade80"></i>สอบผ่าน</span><span><i style="background:#facc15"></i>กำลังฝึก</span><span><i style="background:#fff"></i>ยังไม่เริ่ม</span></div></header>
+<div class="tabs" id="tabs"></div>
+<div class="eqs" id="eqbox"></div>
+<div class="filters"><select id="fs"><option value="">ทุกสถานะ</option><option value="todo">ยังไม่เริ่ม</option><option value="prac">กำลังฝึก</option><option value="done">สอบผ่าน</option></select><input id="q" placeholder="ค้นหาท่า..."></div>
+<div id="list"></div>
+</section>
+<section id="vexam" hidden>
+<div class="ehead"><button class="back" onclick="show('home')">หน้าแรก</button><h1>เตรียมสอบครั้งต่อไป</h1>
+<div class="erow"><label for="edate">วันสอบ<input type="date" id="edate"></label><div class="ecd"><b id="ecd">–</b><span id="ecdl">ยังไม่ได้ตั้งวันสอบ</span></div></div>
+<div class="ebar"><small id="esum"></small><div class="bar" id="ebar"></div></div></div>
+<div class="tools"><button class="pri" onclick="pickOpen()">+ เลือกท่าที่จะสอบ</button><button onclick="copyExam()">คัดลอกเป็นข้อความ</button></div>
+<div class="pick" id="pick" hidden><select id="psec"></select><div class="picklist" id="plist"></div><div class="tools"><button class="pri" onclick="pick.hidden=true">เสร็จแล้ว</button></div></div>
+<div id="copybox" hidden><textarea id="copyout" readonly></textarea><p id="copymsg"></p></div>
+<div id="elist"></div>
+</section>
+<div class="foot" id="foot"><button onclick="panel('exp')">สำรองข้อมูล</button><button onclick="panel('imp')">นำเข้าข้อมูล</button><button onclick="panel('reset')">ล้างข้อมูล</button></div>
+</div>
+<div id="panel" hidden><div class="sheet"><h2 id="ptitle"></h2><p id="pnote"></p><textarea id="pdata"></textarea><p id="pmsg"></p>
+<div class="acts"><button onclick="panel()">ยกเลิก</button><button id="pok">ตกลง</button></div></div></div>
+<script>
+const D=[{"s": "Gateway Mat", "items": [["Mat", "Mat Pelvic Clock"], ["Mat", "Mat Dead Bug"], ["Mat", "Mat Femur Arcs"], ["Mat", "Mat Arm Arcs"], ["Mat", "Mat Bent Knee Opening"], ["Mat", "Mat Bridging"], ["Mat", "Mat Assisted Roll Up"], ["Mat", "Mat Hundred"], ["Mat", "Mat Single Leg Stretch"], ["Mat", "Mat Side to Side"], ["Mat", "Mat Sidelying"], ["Mat", "Mat Mermaid"], ["Mat", "Mat Quadruped"], ["Mat", "Mat Dart"], ["Mat", "Mat Prone Press Up"], ["Mat", "Mat Swan I"], ["Mat", "Mat Rolling"], ["Mat", "Mat Standing Roll Down"], ["Mat", "Mat Spine Stretch"]]}, {"s": "Gateway Equipment", "items": [["Reformer", "Reformer Footwork"], ["Reformer", "Reformer Bridging"], ["Reformer", "Reformer Feet in Straps"], ["Reformer", "Reformer Supine Arm Series"], ["Reformer", "Reformer Supine Abdominal Series"], ["Reformer", "Reformer Quadruped"], ["Reformer", "Reformer Long Box Series: Pulling Straps"], ["Reformer", "Reformer Scooter"], ["Trapeze", "Trapeze Table Footwork with Tower Bar"], ["Trapeze", "Trapeze Table Leg Spring Series - Supine"], ["Trapeze", "Trapeze Table Roll Down Series"], ["Trapeze", "Trapeze Table Seated Push Through"], ["Trapeze", "Trapeze Table Teaser"], ["Chair", "Chair Double Leg Pump"], ["Chair", "Chair Swan"], ["Chair", "Chair Standing Leg Pump"], ["Chair", "Chair Achilles Stretch"], ["Chair", "Chair Forward Lunge"], ["Chair", "Chair Mermaid - Seated"], ["Barrel", "Ladder Barrel Short Box Series"], ["Barrel", "Ladder Barrel Swan"], ["Spine C", "Spine Corrector Supine Stretch"], ["Spine C", "Spine Corrector Side Sit Up"], ["Spine C", "Spine Corrector Rolldown / Reach"]]}, {"s": "R/S-Foundation", "items": [["Mat", "Mat Chest Lift"], ["Mat", "Mat Pelvic Clock - Diagonals"], ["Mat", "Mat Bridging - added variations"], ["Mat", "Mat Dead Bug - alternate"], ["Mat", "Mat Femur Arcs - both legs"], ["Mat", "Mat Bent Knee Opening - legs in air, both legs"], ["Mat", "Mat Side to Side - feet on floor, pendulum, ext legs"], ["Mat", "Mat Arm Arcs - reciprocal"], ["Mat", "Roll Up"], ["Mat", "Mat Book Opening"], ["Mat", "Mat Scarecrow"], ["Mat", "Mat Leg Pull Front"], ["Mat", "Mat Sidekick"], ["Reformer", "Reformer Footwork - Ext/Int, Single Leg"], ["Reformer", "Reformer Roll Down Series"], ["Reformer", "Reformer Seated Footwork"], ["Reformer", "Reformer Feet in Straps - Walking/Peter Pan/Frog"], ["Reformer", "Reformer Bridging - Int/Ext, Extension, Single"], ["Reformer", "Reformer Supine Arm Series - Circles, Cheerleading"], ["Reformer", "Reformer Supine Abdominal Series - Hundred / Coordination"], ["Reformer", "Reformer Mermaid"], ["Reformer", "Reformer Long Box Series: Pulling Straps - T, triceps"], ["Reformer", "Reformer Long Box Series: Prone Shoulder Press and Extension"], ["Reformer", "Reformer Scooter - arms, spine flexion"], ["Trapeze", "Trapeze Table Roll Down Series - flat back, oblique"], ["Trapeze", "Trapeze Table 90/90"], ["Trapeze", "Trapeze Table Footwork with Tower Bar - single leg"], ["Trapeze", "Trapeze Table Supine Scapular Series"], ["Trapeze", "Trapeze Table Upper Quadrant Neural Mobilization"], ["Trapeze", "Trapeze Table Seated Push Through - circumduction"], ["Trapeze", "Trapeze Table Seated Pull Down"], ["Trapeze", "Trapeze Table Leg Spring Series - Supine bicycle, circle"], ["Trapeze", "Trapeze Table Breathing"], ["Trapeze", "Trapeze Table Teaser - full, oblique"], ["Chair", "Chair Double Leg Pump - Ext, side sit"], ["Chair", "Chair Prone Scapular Series"], ["Chair", "Chair Swan - without support"], ["Chair", "Chair Lateral Flexion"], ["Chair", "Chair Mermaid - Seated & Kneeling"], ["Chair", "Chair Standing Leg Pump - side, crossover"], ["Barrel", "Ladder Barrel Supine Stretch"], ["Barrel", "Ladder Barrel Back to Forward Bend"], ["Barrel", "Ladder Barrel Bridging"], ["Barrel", "Ladder Barrel Leg Stretch Series"], ["Barrel", "Ladder Barrel Swan"]]}, {"s": "R/S-Intermediate", "items": [["Mat", "Mat Swan II"], ["Mat", "Mat Rollover"], ["Mat", "Mat Spine Twist"], ["Mat", "Mat Single Leg Kick"], ["Mat", "Mat Swimming"], ["Mat", "Mat Saw"], ["Reformer", "Reformer Cleopatra"], ["Reformer", "Reformer Standing Hip Stretch"], ["Reformer", "Reformer Reverse Abdominals"], ["Reformer", "Reformer Kneeling Arm Series Facing Front"], ["Reformer", "Reformer Kneeling Arm Series Facing Back"], ["Reformer", "Reformer Short Spine Massage"], ["Reformer", "Reformer Long Stretch: Elephant, Inverted V, Long Stretch, Jackrabbit"], ["Reformer", "Reformer Short Box Series"], ["Reformer", "Reformer Standing Series: Side Splits"], ["Trapeze", "Trapeze Table Leg Spring Series - Sidelying"], ["Trapeze", "Trapeze Table Thigh Stretch"], ["Trapeze", "Trapeze Table Kneeling Cat"], ["Trapeze", "Trapeze Table Hip Opener"], ["Chair", "Chair Seated Triceps / Frog Facing Out"], ["Chair", "Chair Hamstring I"], ["Chair", "Chair Frog Lying Flat & Single Leg Pump"], ["Chair", "Chair Forward Lunge & Backward Stepdown"], ["Barrel", "Ladder Barrel Horseback"], ["Barrel", "Ladder Barrel Short Box Series"], ["Barrel", "Ladder Barrel Short Box Series - Climb a Tree"], ["Spine C", "Spine Corrector Leg Series"]]}, {"s": "R/S-Advanced 1", "items": [["Mat", "Mat Leg Pull"], ["Mat", "Mat Side Lift"], ["Mat", "Mat Seal"], ["Mat", "Mat Single Leg Stretch"], ["Mat", "Mat Criss Cross"], ["Reformer", "Reformer Knee Stretches"], ["Reformer", "Reformer Kneeling Arm Series Facing Side"], ["Reformer", "Reformer Kneeling Arm Series Facing Side (2)"], ["Reformer", "Reformer Long Spine Massage"], ["Reformer", "Reformer Semi Circle"], ["Reformer", "Reformer Stomach Massage"], ["Reformer", "Reformer Jumping"], ["Trapeze", "Trapeze Table Swan"], ["Trapeze", "Trapeze Table Pelvic Press"], ["Trapeze", "Trapeze Table Parakeet"], ["Trapeze", "Trapeze Table Hip Extension"], ["Trapeze", "Trapeze Table Assisted Squats"], ["Trapeze", "Trapeze Table Tower"], ["Trapeze", "Trapeze Table Monkey"], ["Trapeze", "Trapeze Table Standing Arm Series Facing In"], ["Trapeze", "Trapeze Table Standing Arm Series Facing Out I"], ["Trapeze", "Trapeze Table Standing Arm Series Facing Out II"], ["Chair", "Chair Swan From Floor"], ["Chair", "Chair Hamstring II & Kneeling Cat"], ["Chair", "Chair Reverse Swan & Teaser"], ["Chair", "Chair Hamstring III"], ["Chair", "Chair Side Lunge & Sideward Stepdown"], ["Barrel", "Ladder Barrel Swimming & Grasshopper"], ["Barrel", "Ladder Barrel Side Sit Up"], ["Spine C", "Spine Corrector Swan"]]}, {"s": "R/S-Advanced 2", "items": [["Mat", "Mat Leg Circle"], ["Mat", "Mat Double Leg Kick"], ["Mat", "Mat Double Leg Stretch"], ["Mat", "Mat Push Up"], ["Mat", "Mat Twist"], ["Mat", "Mat Corkscrew"], ["Reformer", "Reformer Long Box: Swan"], ["Reformer", "Reformer Long Box: Backstroke"], ["Reformer", "Reformer Long Box: Teaser"], ["Reformer", "Reformer Rowing Back I (Round Back)"], ["Reformer", "Reformer Rowing Back II (Flat Back)"], ["Reformer", "Reformer Rowing Front III (Sitting Tall)"], ["Reformer", "Reformer Rowing Front IV (Bending Down)"], ["Reformer", "Reformer Long Stretch: Up, Down"], ["Reformer", "Reformer Long Stretch: Knee Stretch Knees Off, Arabesque"], ["Reformer", "Reformer Tendon Stretch & Gymnast"], ["Reformer", "Reformer Russian Split & Front Split"], ["Trapeze", "Trapeze Table Hanging Series: Hanging Up/Half and Full"], ["Trapeze", "Trapeze Table Spread Eagle"], ["Trapeze", "Trapeze Table Magician"], ["Trapeze", "Trapeze Table Short Spine"], ["Trapeze", "Trapeze Table Dolphin"], ["Chair", "Chair Teaser from Floor"], ["Chair", "Chair Press Up with Handles"], ["Chair", "Chair Side Arm Twist"], ["Chair", "Chair Tendon Stretch"], ["Chair", "Chair Side Pull Up"], ["Barrel", "Ladder Barrel Rollover/Shoulder Stand"], ["Spine C", "Spine Corrector Swimming & Grasshopper"]]}],P={"Gateway Mat|1": [1, 1, "SR"], "Gateway Mat|2": [1, 1, "SR"], "Gateway Mat|3": [1, 1, "SR"], "Gateway Mat|4": [1, 1, "SR 9/11/26"], "Gateway Mat|12": [1, 0, "Day1 Ivan – Ribs organize"], "Gateway Mat|14": [1, 0, "Day1 Ivan – Find ↑ROM"], "Gateway Mat|15": [1, 0, "26/10/26 – Prep arms variation"], "Gateway Mat|17": [1, 1, "SR"], "Gateway Equipment|1": [1, 0, "6/6"], "Gateway Equipment|3": [1, 0, "6/6 SR"], "Gateway Equipment|4": [1, 0, "12/10/26"], "Gateway Equipment|9": [1, 0, "9/11/26"], "Gateway Equipment|16": [1, 0, "6/6 SR"], "Gateway Equipment|22": [1, 0, "9/11/26"], "Gateway Equipment|23": [0, 1, ""], "Gateway Equipment|24": [1, 0, "need to review"], "R/S-Foundation|8": [1, 0, "9/11/26"], "R/S-Foundation|14": [1, 0, "29/10/26"], "R/S-Foundation|17": [1, 0, "29/10/26 – ↑ROM circle"], "R/S-Foundation|18": [1, 0, "12/10/26"], "R/S-Foundation|19": [1, 0, "12/10/26"], "R/S-Foundation|23": [1, 0, "24/10/26 – set up"], "R/S-Foundation|26": [0, 0, "ไม่ต้องสอบ", 1], "R/S-Foundation|27": [1, 0, "9/11/26"], "R/S-Foundation|28": [1, 0, "9/11/26"], "R/S-Foundation|29": [0, 0, "ไม่ต้องสอบ", 1], "R/S-Foundation|31": [1, 0, "9/11/26"], "R/S-Foundation|32": [1, 0, "9/7/26 – Arms"], "R/S-Foundation|42": [1, 0, "9/11/26"]},POSE={"supine": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M20 42H44M44 42l-4-10l8-6M26 42l2-8</g><circle cx=\"14\" cy=\"40\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"12\" cy=\"39\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"16\" cy=\"39\" r=\"1\" fill=\"#5b4636\"/><path d=\"M12 42q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "bridge": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M18 44l10-10H40l6 10M30 34l-6 10</g><circle cx=\"13\" cy=\"42\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"11\" cy=\"41\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"15\" cy=\"41\" r=\"1\" fill=\"#5b4636\"/><path d=\"M11 44q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "prone": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M20 42H48M24 40l-4-8</g><circle cx=\"14\" cy=\"38\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"12\" cy=\"37\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"16\" cy=\"37\" r=\"1\" fill=\"#5b4636\"/><path d=\"M12 40q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "swan": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M22 34l10 8H50M24 34l2 10</g><circle cx=\"16\" cy=\"26\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"14\" cy=\"25\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"18\" cy=\"25\" r=\"1\" fill=\"#5b4636\"/><path d=\"M14 28q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "side": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M20 40H46M46 40l4-8M22 38l-4-8</g><circle cx=\"14\" cy=\"38\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"12\" cy=\"37\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"16\" cy=\"37\" r=\"1\" fill=\"#5b4636\"/><path d=\"M12 40q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "seated": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M32 26V42H48M32 32l10-4</g><circle cx=\"32\" cy=\"18\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"34\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><path d=\"M30 20q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "standing": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M32 26V40M32 40l-6 8M32 40l6 8M32 30l-8 6M32 30l8 6</g><circle cx=\"32\" cy=\"18\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"34\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><path d=\"M30 20q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "kneel": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M30 26V38l8 6H26M30 30l10-2</g><circle cx=\"30\" cy=\"18\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"28\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"32\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><path d=\"M28 20q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "quad": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M22 34H42M22 34v12M42 34v12M42 46l8 0</g><circle cx=\"16\" cy=\"30\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"14\" cy=\"29\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"18\" cy=\"29\" r=\"1\" fill=\"#5b4636\"/><path d=\"M14 32q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "roll": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M22 44q-6-14 8-18M30 26l14-10</g><circle cx=\"18\" cy=\"44\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"16\" cy=\"43\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"20\" cy=\"43\" r=\"1\" fill=\"#5b4636\"/><path d=\"M16 46q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "twist": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M32 26V42M22 32H42</g><circle cx=\"32\" cy=\"18\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"34\" cy=\"17\" r=\"1\" fill=\"#5b4636\"/><path d=\"M30 20q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "jump": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><path d=\"M14 54h36\" stroke=\"#b39ddb\" stroke-width=\"3\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M32 22V34M32 34l-6 8M32 34l6 8M32 26l-10-6M32 26l10-6</g><circle cx=\"32\" cy=\"13\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"30\" cy=\"12\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"34\" cy=\"12\" r=\"1\" fill=\"#5b4636\"/><path d=\"M30 15q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>", "leg": "<svg viewBox=\"0 0 64 64\"><circle cx=\"32\" cy=\"32\" r=\"31\" fill=\"BG\"/><rect x=\"8\" y=\"46\" width=\"48\" height=\"4\" rx=\"2\" fill=\"#b39ddb\"/><g stroke=\"#5b4636\" stroke-width=\"4\" stroke-linecap=\"round\" fill=\"none\">M20 42H40M40 42l6-22M26 42l12-16</g><circle cx=\"14\" cy=\"40\" r=\"7\" fill=\"#ffd9b8\" stroke=\"#5b4636\" stroke-width=\"2\"/><circle cx=\"12\" cy=\"39\" r=\"1\" fill=\"#5b4636\"/><circle cx=\"16\" cy=\"39\" r=\"1\" fill=\"#5b4636\"/><path d=\"M12 42q2 2 4 0\" stroke=\"#e57373\" stroke-width=\"1.2\" fill=\"none\"/></svg>"},EQS={"Mat": "<svg viewBox=\"0 0 64 64\"><rect x=\"6\" y=\"34\" width=\"52\" height=\"8\" rx=\"4\" fill=\"#b39ddb\"/><path d=\"M50 34q6 4 0 8\" fill=\"#9575cd\"/></svg>", "Reformer": "<svg viewBox=\"0 0 64 64\"><rect x=\"6\" y=\"34\" width=\"52\" height=\"6\" rx=\"2\" fill=\"#8d6e63\"/><rect x=\"18\" y=\"28\" width=\"18\" height=\"6\" rx=\"2\" fill=\"#4fc3f7\"/><rect x=\"50\" y=\"20\" width=\"4\" height=\"14\" fill=\"#90a4ae\"/><path d=\"M8 40v8M56 40v8\" stroke=\"#5d4037\" stroke-width=\"3\"/></svg>", "Trapeze": "<svg viewBox=\"0 0 64 64\"><rect x=\"8\" y=\"38\" width=\"48\" height=\"6\" rx=\"2\" fill=\"#4fc3f7\"/><path d=\"M10 44v10M54 44v10M10 38V10H54V38\" stroke=\"#90a4ae\" stroke-width=\"3\" fill=\"none\"/><path d=\"M26 10v10h12V10\" stroke=\"#ff8a65\" stroke-width=\"2\" fill=\"none\"/></svg>", "Chair": "<svg viewBox=\"0 0 64 64\"><rect x=\"14\" y=\"20\" width=\"34\" height=\"8\" rx=\"2\" fill=\"#4fc3f7\"/><rect x=\"16\" y=\"28\" width=\"30\" height=\"24\" fill=\"#a1887f\"/><rect x=\"18\" y=\"46\" width=\"20\" height=\"3\" fill=\"#78909c\"/></svg>", "Barrel": "<svg viewBox=\"0 0 64 64\"><path d=\"M10 52V12M20 52V12M10 18h10M10 28h10M10 38h10\" stroke=\"#a1887f\" stroke-width=\"3\"/><path d=\"M30 52V34q12-18 24 0v18z\" fill=\"#4fc3f7\"/></svg>", "Spine C": "<svg viewBox=\"0 0 64 64\"><path d=\"M8 50h48v-6Q40 18 22 30L16 44H8z\" fill=\"#4fc3f7\"/><rect x=\"8\" y=\"50\" width=\"48\" height=\"4\" fill=\"#8d6e63\"/></svg>"},EQN={"Spine C": "Spine Corrector"},RULES=[["roll", "rollover|corkscrew|rolling|roll up|roll down|rolldown|jackknife|short spine|teaser|hanging|monkey|tower|semi circle|shoulder stand"], ["bridge", "bridg|pelvic press|hip opener"], ["swan", "swan|dart|press up|prone|swimming|grasshopper|backstroke|scooter|dolphin|parakeet|horseback|leg kick|double leg kick|push up|scapular"], ["quad", "quadruped|leg pull front|knee stretch|cat|elephant|long stretch|push up|stomach"], ["side", "side to side|sidelying|sidekick|side lift|side sit|side arm|sideward|side pull|lateral|mermaid|seal"], ["jump", "jumping|spread eagle|magician"], ["standing", "standing|lunge|squat|stepdown|achilles|split|tendon|gymnast|climb"], ["kneel", "kneeling|thigh stretch|arabesque|hip extension"], ["twist", "twist|saw|criss|book|scarecrow"], ["seated", "seated|sitting|short box|rowing|chest lift|spine stretch|pull down|push through|cleopatra|massage|reverse abdominal|double leg pump|hamstring|forward bend|breathing|frog|triceps"], ["leg", "leg|footwork|feet in straps|femur|knee opening|90/90|leg circle|single leg|dead bug|hundred|stretch"], ["supine", ""]],K='polestar_tracker_v1';
+const BG={done:'var(--done-ic)',prac:'var(--prac-ic)',todo:'var(--todo-ic)',skip:'var(--skip-ic)'};
+let st=null;try{st=JSON.parse(localStorage.getItem(K)||'null')}catch(e){}
+if(!st){st={};for(const k in P){const p=P[k];st[k]={d:!!p[0],t:!!p[1],n:p[2]||'',sk:!!p[3],pr:[]}}save()}
+let cur=0,eqf='';function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+function g(k){return st[k]||(st[k]={d:false,t:false,n:'',sk:false,pr:[]})}
+function status(s){if(s.sk)return'skip';if(s.d&&s.t)return'done';if(s.d||s.t||s.pr.length)return'prac';return'todo'}
+function pose(n){n=n.toLowerCase();for(const[p,r]of RULES){if(!r||new RegExp(r).test(n))return p}return'supine'}
+function today(){return new Date().toLocaleDateString('en-GB')}
+const LBL={done:'สอบผ่าน ✓',prac:'กำลังฝึก',todo:'ยังไม่เริ่ม',skip:'ไม่ต้องสอบ'};
+function render(){
+ tabs.innerHTML=D.map((x,i)=>`<button class="${i==cur?'on':''}" onclick="cur=${i};eqf='';render()">${x.s}</button>`).join('');
+ const sec=D[cur],eqs=[...new Set(sec.items.map(i=>i[0]))];
+ eqbox.innerHTML=`<div class="eqb ${eqf?'':'on'}" onclick="eqf='';render()"><svg viewBox="0 0 64 64"><circle cx="22" cy="24" r="9" fill="#a78bfa"/><circle cx="42" cy="24" r="9" fill="#f472b6"/><circle cx="22" cy="44" r="9" fill="#4ade80"/><circle cx="42" cy="44" r="9" fill="#facc15"/></svg>ทั้งหมด<small>${sec.items.length} ท่า</small></div>`+
+  eqs.map(e=>{const its=sec.items.map((it,i)=>[it,sec.s+'|'+(i+1)]).filter(x=>x[0][0]==e),dn=its.filter(x=>status(g(x[1]))=='done').length;
+  return `<div class="eqb ${eqf==e?'on':''}" onclick="eqf='${e}';render()">${EQS[e]}${EQN[e]||e}<small>${dn}/${its.length} ผ่าน</small></div>`}).join('');
+ const q=document.getElementById('q').value.toLowerCase(),fv=fs.value;let h='',c={done:0,prac:0,todo:0,skip:0};
+ sec.items.forEach((it,i)=>{const k=sec.s+'|'+(i+1),s=g(k),st_=status(s);c[st_]++;
+  if(eqf&&it[0]!=eqf)return;if(q&&!it[1].toLowerCase().includes(q))return;if(fv&&fv!=st_)return;
+  const last=s.pr.length?s.pr[s.pr.length-1]:'-';
+  h+=`<div class="card ${st_}"><div class="ic">${POSE[pose(it[1])].replace('BG',BG[st_])}</div><div class="bd">
+  <span class="badge">${LBL[st_]}</span><div class="eq">${EQN[it[0]]||it[0]}</div><div class="t">${i+1}. ${it[1]}</div>
+  <div class="row"><button class="chip ${s.d?'on':''}" onclick="tg('${k}','d')">${s.d?'✓':'○'} Demo</button>
+  <button class="chip ${s.t?'on':''}" onclick="tg('${k}','t')">${s.t?'✓':'○'} Teaching</button>
+  <button class="chip p" onclick="pr('${k}')">💪 ฝึกวันนี้</button>
+  <button class="chip sk ${s.sk?'on':''}" onclick="tg('${k}','sk')">ไม่ต้องสอบ</button></div>
+  <div class="pr">ฝึกแล้ว ${s.pr.length} ครั้ง · ล่าสุด ${last} ${s.pr.length?`<a href="#" onclick="up('${k}');return false">ย้อนกลับ</a>`:''}</div>
+  <textarea rows="1" placeholder="📝 โน้ต" onchange="g('${k}').n=this.value;save()">${s.n}</textarea></div></div>`});
+ list.innerHTML=h||'<p class="empty">'+CORGI_FACE+'ไม่มีท่าที่ตรงเงื่อนไข</p>';
+ const tot=sec.items.length-c.skip,pg=tot?c.done/tot*100:0,py=tot?c.prac/tot*100:0;
+ sum.textContent=`${sec.s} · ผ่าน ${c.done} · กำลังฝึก ${c.prac} · เหลือ ${c.todo} (จาก ${tot} ท่า)`;
+ bar.innerHTML=`<div class="g" style="width:${pg}%"></div><div class="y" style="width:${py}%"></div>`}
+
+
+function corgi(x,y,s){return `<g transform="translate(${x} ${y}) scale(${s})">
+<path d="M-11 -3Q-16 -17 -9 -15.5Q-5 -14 -3 -9Z" fill="#f29a4a" stroke="#8a5223" stroke-width=".9" stroke-linejoin="round"/><path d="M-9.6 -5Q-12.6 -14 -8.8 -13.2Q-6.4 -12.4 -5 -9Z" fill="#ffc2cc"/>
+<path d="M11 -3Q16 -17 9 -15.5Q5 -14 3 -9Z" fill="#f29a4a" stroke="#8a5223" stroke-width=".9" stroke-linejoin="round"/><path d="M9.6 -5Q12.6 -14 8.8 -13.2Q6.4 -12.4 5 -9Z" fill="#ffc2cc"/>
+<path d="M0 -10.8C7.6 -10.8 12.6 -5.6 12.6 1.2C12.6 7.6 7 11 0 11C-7 11 -12.6 7.6 -12.6 1.2C-12.6 -5.6 -7.6 -10.8 0 -10.8Z" fill="#f7a85a" stroke="#8a5223" stroke-width=".9"/>
+<path d="M0 -10.6C-1.4 -6 -2.2 -3.6 -3 -1.6C-6.6 0 -9 3.4 -8.6 6.2C-6.6 9.6 -3 10.9 0 10.9C3 10.9 6.6 9.6 8.6 6.2C9 3.4 6.6 0 3 -1.6C2.2 -3.6 1.4 -6 0 -10.6Z" fill="#fffaf2"/>
+<ellipse cx="-5.4" cy="0.6" rx="2.3" ry="2.7" fill="#2b1d12"/><ellipse cx="5.4" cy="0.6" rx="2.3" ry="2.7" fill="#2b1d12"/>
+<circle cx="-4.6" cy="-0.5" r=".95" fill="#fff"/><circle cx="6.2" cy="-0.5" r=".95" fill="#fff"/><circle cx="-6.1" cy="1.7" r=".45" fill="#fff"/><circle cx="4.7" cy="1.7" r=".45" fill="#fff"/>
+<ellipse cx="-8.3" cy="4.4" rx="2" ry="1.2" fill="#ff8fa8" opacity=".7"/><ellipse cx="8.3" cy="4.4" rx="2" ry="1.2" fill="#ff8fa8" opacity=".7"/>
+<path d="M-1.5 3.3Q0 2.6 1.5 3.3Q1.2 4.7 0 5Q-1.2 4.7 -1.5 3.3Z" fill="#2b1d12"/>
+<path d="M0 5V5.8M0 5.8Q-1 7 -2.2 6.2M0 5.8Q1 7 2.2 6.2" stroke="#2b1d12" stroke-width=".7" stroke-linecap="round" fill="none"/>
+<path d="M-.9 6.6Q0 8.6 .9 6.6Z" fill="#ff7a92"/></g>`}
+const CORGI_BODY=`<svg viewBox="0 0 120 80" aria-hidden="true"><ellipse cx="60" cy="74" rx="40" ry="4" fill="#0002"/>
+<path d="M96 40q14-10 10 4" stroke="#e8893a" stroke-width="7" stroke-linecap="round" fill="none"/>
+<rect x="34" y="34" width="64" height="30" rx="15" fill="#f2a04e" stroke="#7a4a1e" stroke-width="1.5"/><path d="M40 60q20-14 40 0" fill="#fff8ef"/>
+<rect x="40" y="58" width="9" height="14" rx="4" fill="#fff8ef" stroke="#7a4a1e" stroke-width="1.2"/><rect x="82" y="58" width="9" height="14" rx="4" fill="#fff8ef" stroke="#7a4a1e" stroke-width="1.2"/>
+<svg x="12" y="8" width="44" height="44" viewBox="-14 -16 28 28">${'X'}</svg></svg>`;
+function corgiSvg(vb,content){return `<svg viewBox="${vb}" aria-hidden="true">${content}</svg>`}
+const CORGI_FULL=CORGI_BODY.replace('X',corgi(0,0,1));
+const CORGI_FACE=corgiSvg('-15 -17 30 30',corgi(0,0,1));
+for(const k in POSE)POSE[k]=POSE[k].replace(/<circle cx="(\d+)" cy="(\d+)" r="7" fill="#ffd9b8"[^>]*\/>(<circle[^>]*\/>){2}<path[^>]*\/>/,(m,x,y)=>corgi(x,y,.7));
+for(const k in POSE)POSE[k]=POSE[k].replace(/(<g [^>]*>)([^<]+)(<\/g>)/,'$1<path d="$2"/>$3');
+function prof(){return st.__p||null}
+function counts(items,sname){const c={done:0,prac:0,todo:0,skip:0};items.forEach((it,i)=>c[status(g(sname+'|'+(i+1)))]++);return c}
+function show(v){if(v=='home'&&!prof())v='reg';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';if(v=='exam')renderExam();foot.hidden=v=='reg';
+ if(v=='home')renderHome();if(v=='det')render();if(v=='reg'){const p=prof()||{};rname.value=p.name||'';rstudio.value=p.studio||''}window.scrollTo(0,0)}
+function editProfile(){show('reg')}
+regf.onsubmit=e=>{e.preventDefault();const n=rname.value.trim();if(!n)return;st.__p={name:n,studio:rstudio.value.trim()};save();show('home')}
+function renderHome(){{const e=ex(),n=daysLeft(e.date),c=cdText(n);hcd.textContent=c[0];hcdl.textContent=n>0?'วัน':c[1];const rd=e.items.filter(k=>e.ready[k]).length;hexs.textContent=e.items.length?`${e.date?'สอบ '+fmtD(e.date)+' · ':''}พร้อม ${rd}/${e.items.length} ท่า`:'ตั้งวันสอบและเลือกท่าที่จะสอบ'}const p=prof();hname.textContent=p.name;hav.innerHTML=CORGI_FACE;hstudio.textContent=p.studio||'Polestar Pilates · Comprehensive';
+ let T={done:0,prac:0,todo:0,skip:0};
+ secs.innerHTML=D.map((s,i)=>{const c=counts(s.items,s.s);for(const k in T)T[k]+=c[k];const tot=s.items.length-c.skip,pg=tot?c.done/tot*100:0,py=tot?c.prac/tot*100:0;
+  return `<button class="secrow" onclick="cur=${i};eqf='';show('det')"><span class="n">${s.s}</span><span class="pc">${Math.round(pg)}%</span>
+  <span class="sb"><span class="g" style="width:${pg}%"></span><span class="y" style="width:${py}%"></span></span>
+  <small>ผ่าน ${c.done} · กำลังฝึก ${c.prac} · เหลือ ${c.todo} จาก ${tot} ท่า</small></button>`}).join('');
+ const tot=T.done+T.prac+T.todo,a=tot?T.done/tot*100:0,b=tot?T.prac/tot*100:0;dpc.textContent=Math.round(a)+'%';
+ const r=15.9155;dn.innerHTML=`<circle cx="21" cy="21" r="${r}" fill="none" stroke="var(--chip)" stroke-width="6"/>
+ <circle cx="21" cy="21" r="${r}" fill="none" stroke="#facc15" stroke-width="6" stroke-dasharray="${a+b} ${100-a-b}"/>
+ <circle cx="21" cy="21" r="${r}" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="${a} ${100-a}"/>`;
+ dstats.innerHTML=[['#22c55e','สอบผ่าน',T.done],['#facc15','กำลังฝึก',T.prac],['var(--chip)','ยังไม่เริ่ม',T.todo]].map(x=>`<div class="stat"><i style="background:${x[0]}"></i>${x[1]}<b>${x[2]} ท่า</b></div>`).join('')+`<div class="stat" style="color:var(--muted)">รวม<b>${tot} ท่า</b></div>`}
+
+function ex(){return st.__e||(st.__e={date:'',items:[],ready:{}})}
+function findIt(k){const[s,n]=k.split('|');const sec=D.find(x=>x.s==s);return sec?sec.items[n-1]:null}
+function daysLeft(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/864e5)}
+function fmtD(d){const[y,m,dd]=d.split('-');return `${+dd}/${+m}/${y}`}
+function cdText(n){return n==null?['–','ยังไม่ตั้งวัน']:n>0?[n,'วันก่อนสอบ']:n==0?['วันนี้','วันสอบ']:[-n,'วันที่ผ่านมาแล้ว']}
+function renderExam(){const e=ex();edate.value=e.date;const n=daysLeft(e.date),c=cdText(n);ecd.textContent=c[0];ecdl.textContent=e.date?(n>0?'วันก่อนสอบ · '+fmtD(e.date):c[1]+' · '+fmtD(e.date)):c[1];
+ const rd=e.items.filter(k=>e.ready[k]).length,tot=e.items.length;esum.textContent=tot?`พร้อมแล้ว ${rd} จาก ${tot} ท่า`:'ยังไม่ได้เลือกท่า';
+ ebar.innerHTML=`<div class="g" style="width:${tot?rd/tot*100:0}%"></div>`;
+ elist.innerHTML=tot?e.items.map(k=>{const it=findIt(k);if(!it)return'';const s=g(k),r=!!e.ready[k];
+  return `<div class="eitem ${r?'rd':''}"><div class="ic">${POSE[pose(it[1])].replace('BG',r?'var(--done-ic)':'var(--prac-ic)')}</div><div class="bd" style="flex:1;min-width:0">
+  <div class="t">${it[1]}</div><small>${k.split('|')[0]}<span class="sp ${status(s)}">${LBL[status(s)]}</span> · ฝึกแล้ว ${s.pr.length} ครั้ง${s.pr.length?' · ล่าสุด '+s.pr[s.pr.length-1]:''}</small>
+  <div class="row"><button class="chip ${r?'on':''}" onclick="exReady('${k}')">${r?'✓ พร้อมสอบ':'○ ยังต้องซ้อม'}</button><button class="chip p" onclick="pr('${k}');renderExam()">💪 ฝึกวันนี้</button></div></div>
+  <button class="x" aria-label="เอาออก" onclick="exToggle('${k}')">×</button></div>`}).join(''):`<p class="empty">${CORGI_FACE}กด "เลือกท่าที่จะสอบ" เพื่อเพิ่มท่าเข้าลิสต์</p>`}
+edate.onchange=()=>{ex().date=edate.value;save();renderExam()}
+function exReady(k){const e=ex();e.ready[k]=!e.ready[k];save();renderExam()}
+function exToggle(k){const e=ex(),i=e.items.indexOf(k);if(i<0)e.items.push(k);else{e.items.splice(i,1);delete e.ready[k]}save();renderExam();if(!pick.hidden)pickList()}
+function pickOpen(){pick.hidden=false;psec.innerHTML=D.map((s,i)=>`<option value="${i}">${s.s}</option>`).join('');pickList()}
+function pickList(){const sec=D[psec.value||0],e=ex();plist.innerHTML=sec.items.map((it,i)=>{const k=sec.s+'|'+(i+1),stt=status(g(k));if(stt=='skip')return'';
+ return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}<span class="sp ${stt}">${LBL[stt]}</span></small></span></label>`}).join('')}
+psec.onchange=pickList;
+function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 เตรียมสอบ Polestar Pilates${p.name?' – '+p.name:''}\n`;
+ if(e.date)t+=`📅 วันสอบ ${fmtD(e.date)}${n>0?` (อีก ${n} วัน)`:n==0?' (วันนี้)':''}\n`;
+ const rd=e.items.filter(k=>e.ready[k]);t+=`พร้อมแล้ว ${rd.length}/${e.items.length} ท่า\n`;
+ const line=k=>{const it=findIt(k),s=g(k);return `• ${it[1]} [${k.split('|')[0]}] ฝึก ${s.pr.length} ครั้ง${s.n?' – '+s.n:''}`};
+ const todo=e.items.filter(k=>!e.ready[k]);
+ if(rd.length)t+=`\n✅ พร้อมสอบ\n`+rd.map(line).join('\n')+'\n';if(todo.length)t+=`\n⏳ ยังต้องซ้อม\n`+todo.map(line).join('\n')+'\n';return t.trim()}
+function copyExam(){const t=examText();copybox.hidden=false;copyout.value=t;copymsg.textContent='';
+ navigator.clipboard.writeText(t).then(()=>copymsg.textContent='คัดลอกแล้ว นำไปวางในแชตได้เลย',()=>{copyout.select();copymsg.textContent='กดค้างที่ข้อความแล้วเลือกคัดลอก'})}
+function tg(k,f){g(k)[f]=!g(k)[f];save();render()}
+function pr(k){g(k).pr.push(today());save();render()}
+function up(k){g(k).pr.pop();save();render()}
+
+function panel(m){const p=document.getElementById('panel');p.hidden=!m;if(!m)return;
+ const ta=document.getElementById('pdata'),msg=document.getElementById('pmsg');msg.textContent='';
+ document.getElementById('ptitle').textContent={exp:'สำรองข้อมูล',imp:'นำเข้าข้อมูล',reset:'ล้างข้อมูลทั้งหมด?'}[m];
+ ta.hidden=m=='reset';ta.readOnly=m=='exp';ta.value=m=='exp'?JSON.stringify(st):'';
+ document.getElementById('pnote').textContent={exp:'คัดลอกข้อความนี้ไปเก็บไว้ใน Notes แล้วนำไปวางที่เครื่องอื่นได้',imp:'วางข้อความที่สำรองไว้ แล้วกดยืนยัน',reset:'ทุกท่าจะกลับไปเป็นยังไม่เริ่ม ย้อนกลับไม่ได้'}[m];
+ const ok=document.getElementById('pok');ok.textContent={exp:'คัดลอก',imp:'นำเข้า',reset:'ล้างข้อมูล'}[m];
+ ok.onclick=()=>{if(m=='exp'){navigator.clipboard.writeText(ta.value).then(()=>msg.textContent='คัดลอกแล้ว',()=>{ta.select();msg.textContent='กดค้างที่ข้อความแล้วเลือกคัดลอก'})}
+  else if(m=='imp'){try{st=JSON.parse(ta.value);save();show('home');panel()}catch(e){msg.textContent='ข้อความไม่ถูกต้อง ลองคัดลอกมาใหม่ทั้งหมด'}}
+  else{const p=st.__p;st=p?{__p:p}:{};save();show(vdet.hidden?'home':'det');panel()}}}
+fs.onchange=render;document.getElementById('q').oninput=render;regc.innerHTML=CORGI_FACE.replace('<svg ','<svg class="corgi-reg" ');walk.innerHTML=CORGI_FACE;show('home');
+</script>
+</body></html>

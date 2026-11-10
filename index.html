@@ -98,15 +98,28 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 .erow label{flex:1 1 150px;min-width:0}
 .t,.pn,.n,.examcard .ex b{overflow-wrap:anywhere}
 .tabs,.eqs{max-width:100%;-webkit-overflow-scrolling:touch}
+
+.sr{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.hero .av{position:relative;cursor:pointer;overflow:visible}.hero .av img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block}
+.cam{position:absolute;right:-4px;bottom:-4px;width:22px;height:22px;border-radius:50%;background:var(--accent2);display:grid;place-items:center;box-shadow:0 1px 3px #0004}.cam svg{width:13px;height:13px}
+.hero .av:focus-within{outline:2px solid #fff;outline-offset:2px}
+.phrow{display:flex;align-items:center;gap:14px}
+.phprev{flex:0 0 72px;height:72px;border-radius:50%;background:var(--thumb);padding:4px;overflow:hidden}.phprev svg,.phprev img{width:100%;height:100%;display:block;border-radius:50%;object-fit:cover}
+.phbtns{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.reg .phbtn{display:inline-block;cursor:pointer;border-radius:10px;padding:8px 14px;background:var(--chip);color:var(--accent);font-weight:600;font-size:14px}
+.reg .phbtn:focus-within{outline:2px solid var(--accent2)}
+.reg .phlink{background:none;color:var(--muted);padding:2px 0;font:500 13px var(--font);text-decoration:underline}
+.phmsg{font-size:12px!important;color:var(--accent2)!important}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <div class="wrap">
 <section id="vreg" hidden><form class="reg" id="regf"><span id="regc"></span><h1>ยินดีต้อนรับ</h1><p>ลงทะเบียนครั้งแรกเพื่อเริ่มติดตามการฝึก Polestar Self-Mastery</p>
+<div class="phrow"><div class="phprev" id="rprev"></div><div class="phbtns"><label class="phbtn" for="rphoto">เลือกรูปโปรไฟล์<input type="file" id="rphoto" accept="image/*" class="sr"></label><button type="button" class="phlink" id="rcorgi">ใช้รูปน้องคอร์กี้</button></div></div><p class="phmsg" id="rpmsg"></p>
 <label for="rname">ชื่อของคุณ<input id="rname" required placeholder="เช่น แบงค์"></label>
 <label for="rstudio">สตูดิโอ / รุ่น (ไม่ใส่ก็ได้)<input id="rstudio" placeholder="เช่น Comprehensive 2026"></label>
 <button type="submit">เริ่มใช้งาน</button></form></section>
-<section id="vhome" hidden><div class="hero"><div class="av" id="hav"></div><div><h1 id="hname"></h1><p id="hstudio"></p></div><button onclick="editProfile()">แก้ไข</button></div>
+<section id="vhome" hidden><div class="hero"><label class="av" id="hav" for="hphoto" title="แตะเพื่อเปลี่ยนรูป"></label><input type="file" id="hphoto" accept="image/*" class="sr" aria-label="เปลี่ยนรูปโปรไฟล์"><div><h1 id="hname"></h1><p id="hstudio"></p></div><button onclick="editProfile()">แก้ไข</button></div>
 <div class="panel2"><button class="examcard" onclick="show('exam')"><span class="cd"><b id="hcd">–</b><span id="hcdl">วัน</span></span><span class="ex"><b>เตรียมสอบครั้งต่อไป</b><small id="hexs"></small></span><span class="go">›</span></button></div>
 <div class="panel2"><h2>ภาพรวมทั้งหมด</h2><div class="overall"><div class="donut"><svg viewBox="0 0 42 42" id="dn"></svg><div class="mid"><b id="dpc"></b><span>สอบผ่าน</span></div></div>
 <div class="stats" id="dstats"></div></div></div>
@@ -191,10 +204,10 @@ for(const k in POSE)POSE[k]=POSE[k].replace(/(<g [^>]*>)([^<]+)(<\/g>)/,'$1<path
 function prof(){return st.__p||null}
 function counts(items,sname){const c={done:0,prac:0,todo:0,skip:0};items.forEach((it,i)=>c[status(g(sname+'|'+(i+1)))]++);return c}
 function show(v){if(v=='home'&&!prof())v='reg';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';if(v=='exam')renderExam();foot.hidden=v=='reg';
- if(v=='home')renderHome();if(v=='det')render();if(v=='reg'){const p=prof()||{};rname.value=p.name||'';rstudio.value=p.studio||''}window.scrollTo(0,0)}
+ if(v=='home')renderHome();if(v=='det')render();if(v=='reg'){const p=prof()||{};rname.value=p.name||'';rstudio.value=p.studio||'';regPhoto=p.photo||null;rpmsg.textContent='';rprev.innerHTML=avatar(regPhoto)}window.scrollTo(0,0)}
 function editProfile(){show('reg')}
-regf.onsubmit=e=>{e.preventDefault();const n=rname.value.trim();if(!n)return;st.__p={name:n,studio:rstudio.value.trim()};save();show('home')}
-function renderHome(){{const e=ex(),n=daysLeft(e.date),c=cdText(n);hcd.textContent=c[0];hcdl.textContent=n>0?'วัน':c[1];const rd=e.items.filter(k=>e.ready[k]).length;hexs.textContent=e.items.length?`${e.date?'สอบ '+fmtD(e.date)+' · ':''}พร้อม ${rd}/${e.items.length} ท่า`:'ตั้งวันสอบและเลือกท่าที่จะสอบ'}const p=prof();hname.textContent=p.name;hav.innerHTML=CORGI_FACE;hstudio.textContent=p.studio||'Polestar Pilates · Comprehensive';
+regf.onsubmit=e=>{e.preventDefault();const n=rname.value.trim();if(!n)return;st.__p={name:n,studio:rstudio.value.trim(),photo:regPhoto||''};save();show('home')}
+function renderHome(){{const e=ex(),n=daysLeft(e.date),c=cdText(n);hcd.textContent=c[0];hcdl.textContent=n>0?'วัน':c[1];const rd=e.items.filter(k=>e.ready[k]).length;hexs.textContent=e.items.length?`${e.date?'สอบ '+fmtD(e.date)+' · ':''}พร้อม ${rd}/${e.items.length} ท่า`:'ตั้งวันสอบและเลือกท่าที่จะสอบ'}const p=prof();hname.textContent=p.name;hav.innerHTML=avatar(p.photo)+CAM;hstudio.textContent=p.studio||'Polestar Pilates · Comprehensive';
  let T={done:0,prac:0,todo:0,skip:0};
  secs.innerHTML=D.map((s,i)=>{const c=counts(s.items,s.s);for(const k in T)T[k]+=c[k];const tot=s.items.length-c.skip,pg=tot?c.done/tot*100:0,py=tot?c.prac/tot*100:0;
   return `<button class="secrow" onclick="cur=${i};eqf='';show('det')"><span class="n">${s.s}</span><span class="pc">${Math.round(pg)}%</span>
@@ -234,6 +247,16 @@ function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 เ
  if(rd.length)t+=`\n✅ พร้อมสอบ\n`+rd.map(line).join('\n')+'\n';if(todo.length)t+=`\n⏳ ยังต้องซ้อม\n`+todo.map(line).join('\n')+'\n';return t.trim()}
 function copyExam(){const t=examText();copybox.hidden=false;copyout.value=t;copymsg.textContent='';
  navigator.clipboard.writeText(t).then(()=>copymsg.textContent='คัดลอกแล้ว นำไปวางในแชตได้เลย',()=>{copyout.select();copymsg.textContent='กดค้างที่ข้อความแล้วเลือกคัดลอก'})}
+
+let regPhoto=null;
+const CAM='<span class="cam"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>';
+function avatar(ph){return ph?`<img src="${ph}" alt="รูปโปรไฟล์">`:CORGI_FACE}
+function loadPhoto(file,cb){if(!file)return cb(null);const fr=new FileReader();fr.onerror=()=>cb(null);fr.onload=()=>{const img=new Image();img.onerror=()=>cb(null);
+ img.onload=()=>{const S=240,c=document.createElement('canvas');c.width=c.height=S;const m=Math.min(img.width,img.height);
+ c.getContext('2d').drawImage(img,(img.width-m)/2,(img.height-m)/2,m,m,0,0,S,S);cb(c.toDataURL('image/jpeg',.85))};img.src=fr.result};fr.readAsDataURL(file)}
+rphoto.onchange=()=>loadPhoto(rphoto.files[0],d=>{rpmsg.textContent=d?'':'เปิดรูปนี้ไม่ได้ ลองเลือกรูปอื่น';if(d){regPhoto=d;rprev.innerHTML=avatar(d)}rphoto.value=''});
+rcorgi.onclick=()=>{regPhoto=null;rpmsg.textContent='';rprev.innerHTML=CORGI_FACE};
+hphoto.onchange=()=>loadPhoto(hphoto.files[0],d=>{if(d&&prof()){st.__p.photo=d;save();renderHome()}hphoto.value=''});
 function tg(k,f){g(k)[f]=!g(k)[f];save();render()}
 function pr(k){g(k).pr.push(today());save();render()}
 function up(k){g(k).pr.pop();save();render()}

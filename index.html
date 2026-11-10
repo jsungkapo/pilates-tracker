@@ -107,6 +107,11 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 .reg .phlink{background:none;color:var(--muted);padding:2px 0;font:500 13px var(--font);text-decoration:underline}
 .phmsg{font-size:12px!important;color:var(--accent2)!important}
 .eqb .eqimg{width:62px;height:62px;display:block;margin:0 auto 4px;background:var(--thumb);border-radius:12px;object-fit:contain;padding:3px;box-sizing:border-box}
+
+.pick label{flex-direction:row-reverse;justify-content:flex-start}.pick label input{margin-top:2px}
+.pf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.pf button{border:1px solid var(--line);border-radius:14px;padding:6px 11px;background:var(--surface);color:var(--fg);font:500 12px var(--font);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.pf button i{width:8px;height:8px;border-radius:50%;display:inline-block}.pf button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pf button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -134,7 +139,7 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 <div class="erow"><label for="edate">วันสอบ<input type="date" id="edate"></label><div class="ecd"><b id="ecd">–</b><span id="ecdl">ยังไม่ได้ตั้งวันสอบ</span></div></div>
 <div class="ebar"><small id="esum"></small><div class="bar" id="ebar"></div></div></div>
 <div class="tools"><button class="pri" onclick="pickOpen()">+ เลือกท่าที่จะสอบ</button><button onclick="copyExam()">คัดลอกเป็นข้อความ</button></div>
-<div class="pick" id="pick" hidden><select id="psec"></select><div class="picklist" id="plist"></div><div class="tools"><button class="pri" onclick="pick.hidden=true">เสร็จแล้ว</button></div></div>
+<div class="pick" id="pick" hidden><select id="psec"></select><div class="pf" id="pf"></div><div class="picklist" id="plist"></div><div class="tools"><button class="pri" onclick="pick.hidden=true">เสร็จแล้ว</button></div></div>
 <div id="copybox" hidden><textarea id="copyout" readonly></textarea><p id="copymsg"></p></div>
 <div id="elist"></div>
 </section>
@@ -233,8 +238,12 @@ edate.onchange=()=>{ex().date=edate.value;save();renderExam()}
 function exReady(k){const e=ex();e.ready[k]=!e.ready[k];save();renderExam()}
 function exToggle(k){const e=ex(),i=e.items.indexOf(k);if(i<0)e.items.push(k);else{e.items.splice(i,1);delete e.ready[k]}save();renderExam();if(!pick.hidden)pickList()}
 function pickOpen(){pick.hidden=false;psec.innerHTML=D.map((s,i)=>`<option value="${i}">${s.s}</option>`).join('');pickList()}
-function pickList(){const sec=D[psec.value||0],e=ex();plist.innerHTML=sec.items.map((it,i)=>{const k=sec.s+'|'+(i+1),stt=status(g(k));if(stt=='skip')return'';
- return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}<span class="sp ${stt}">${LBL[stt]}</span></small></span></label>`}).join('')}
+let pickF='';
+function pickList(){const sec=D[psec.value||0],e=ex(),F=[['','ทั้งหมด',''],['done','สอบผ่าน','#22c55e'],['prac','กำลังฝึก','#facc15'],['todo','ยังไม่เริ่ม','#ef4444']];
+ const cnt={'':0,done:0,prac:0,todo:0};sec.items.forEach((it,i)=>{const s=status(g(sec.s+'|'+(i+1)));if(s!='skip'){cnt[s]++;cnt['']++}});
+ pf.innerHTML=F.map(f=>`<button type="button" class="${pickF==f[0]?'on':''}" onclick="pickF='${f[0]}';pickList()">${f[2]?`<i style="background:${f[2]}"></i>`:''}${f[1]} ${cnt[f[0]]}</button>`).join('');
+ const html=sec.items.map((it,i)=>{const k=sec.s+'|'+(i+1),stt=status(g(k));if(stt=='skip'||(pickF&&stt!=pickF))return'';
+ return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}<span class="sp ${stt}">${LBL[stt]}</span></small></span></label>`}).join('');plist.innerHTML=html||'<p class="empty">ไม่มีท่าในสถานะนี้</p>'}
 psec.onchange=pickList;
 function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 เตรียมสอบ Polestar Pilates${p.name?' – '+p.name:''}\n`;
  if(e.date)t+=`📅 วันสอบ ${fmtD(e.date)}${n>0?` (อีก ${n} วัน)`:n==0?' (วันนี้)':''}\n`;

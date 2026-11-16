@@ -113,6 +113,16 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 .pf button i{width:8px;height:8px;border-radius:50%;display:inline-block}.pf button.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .pf button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .picic{width:58px;height:58px;border-radius:16px;overflow:hidden;display:grid;place-items:center}.picic img{width:96%;height:96%;object-fit:contain;display:block}.eitem .ic .picic{width:44px;height:44px}
+
+.pills{display:inline-flex;gap:4px;flex-wrap:wrap;margin-left:6px;vertical-align:1px}
+.sk2{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:8px;white-space:nowrap}
+.sk2.ok{background:#22c55e;color:#fff}.sk2.no{background:#fee2e2;color:#b91c1c}
+.pick label .pills{flex:none;flex-direction:column;align-items:stretch;margin-left:8px}.pick label .pills .sk2{text-align:center;min-width:64px}
+.sharebar{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:14px}
+.sharebar>button{border:0;border-radius:12px;padding:11px 18px;background:var(--accent);color:#fff;font:600 15px var(--font);cursor:pointer;box-shadow:0 2px 6px #0f766e33}
+#sharebox{width:100%;background:var(--surface);border-radius:14px;padding:12px;box-shadow:0 2px 8px #0001}#sharebox .hint,#sharemsg{margin:0 0 6px;font-size:12px;color:var(--muted)}#sharemsg{color:var(--accent2);margin:6px 0 0}
+#shareout{width:100%;font-size:12px}
+.secrow.ro{cursor:default}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -126,7 +136,13 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 <div class="panel2"><button class="examcard" onclick="show('exam')"><span class="cd"><b id="hcd">–</b><span id="hcdl">วัน</span></span><span class="ex"><b>เตรียมสอบครั้งต่อไป</b><small id="hexs"></small></span><span class="go">›</span></button></div>
 <div class="panel2"><h2>ภาพรวมทั้งหมด</h2><div class="overall"><div class="donut"><svg viewBox="0 0 42 42" id="dn"></svg><div class="mid"><b id="dpc"></b><span>สอบผ่าน</span></div></div>
 <div class="stats" id="dstats"></div></div></div>
-<div class="panel2"><h2>Level</h2><div id="secs"></div></div><div class="walker" id="walk"></div></section>
+<div class="panel2"><h2>Level</h2><div id="secs"></div></div>
+<div class="sharebar"><button class="pri" onclick="shareProgress()">แชร์ความคืบหน้าให้เพื่อน</button><div id="sharebox" hidden><p class="hint">ส่งลิงก์นี้ให้เพื่อน เพื่อนจะเห็นเปอร์เซ็นต์ ณ ตอนที่กดแชร์</p><textarea id="shareout" readonly rows="3"></textarea><p id="sharemsg"></p></div></div>
+<div class="walker" id="walk"></div></section>
+<section id="vshare" hidden><div class="hero"><div class="av" id="sav"></div><div><h1 id="shn"></h1><p id="shd"></p></div></div>
+<div class="panel2"><h2>ภาพรวมทั้งหมด</h2><div class="overall"><div class="donut"><svg viewBox="0 0 42 42" id="sdn"></svg><div class="mid"><b id="sdpc"></b><span>สอบผ่าน</span></div></div><div class="stats" id="sstats"></div></div></div>
+<div class="panel2"><h2>Level</h2><div id="ssecs"></div></div>
+<div class="sharebar"><button class="pri" onclick="leaveShare()">เปิดแอปของฉัน</button></div></section>
 <section id="vdet" hidden>
 <header><button class="back" onclick="show('home')">หน้าแรก</button><h1>Polestar Self-Mastery</h1><div id="sum"></div><div class="bar" id="bar"></div>
 <div class="legend"><span><i style="background:#4ade80"></i>สอบผ่าน</span><span><i style="background:#facc15"></i>กำลังฝึก</span><span><i style="background:#fff"></i>ยังไม่เริ่ม</span></div></header>
@@ -179,8 +195,8 @@ function render(){
   const last=s.pr.length?s.pr[s.pr.length-1]:'-';
   h+=`<div class="card ${st_}"><div class="ic">${icon(k,it[1],BG[st_])}</div><div class="bd">
   <span class="badge">${LBL[st_]}</span><div class="eq">${EQN[it[0]]||it[0]}</div><div class="t">${i+1}. ${it[1]}</div>
-  <div class="row"><button class="chip ${s.d?'on':''}" onclick="tg('${k}','d')">${s.d?'✓':'○'} Demo</button>
-  <button class="chip ${s.t?'on':''}" onclick="tg('${k}','t')">${s.t?'✓':'○'} Teaching</button>
+  <div class="row"><button class="chip ${s.d?'on':''}" onclick="tg('${k}','d')">${s.d?'✓':'○'} ปฏิบัติ</button>
+  <button class="chip ${s.t?'on':''}" onclick="tg('${k}','t')">${s.t?'✓':'○'} สอน</button>
   <button class="chip p" onclick="pr('${k}')">💪 ฝึกวันนี้</button>
   <button class="chip sk ${s.sk?'on':''}" onclick="tg('${k}','sk')">ไม่ต้องสอบ</button></div>
   <div class="pr">ฝึกแล้ว ${s.pr.length} ครั้ง · ล่าสุด ${last} ${s.pr.length?`<a href="#" onclick="up('${k}');return false">ย้อนกลับ</a>`:''}</div>
@@ -214,7 +230,7 @@ for(const k in POSE)POSE[k]=POSE[k].replace(/<circle cx="(\d+)" cy="(\d+)" r="7"
 for(const k in POSE)POSE[k]=POSE[k].replace(/(<g [^>]*>)([^<]+)(<\/g>)/,'$1<path d="$2"/>$3');
 function prof(){return st.__p||null}
 function counts(items,sname){const c={done:0,prac:0,todo:0,skip:0};items.forEach((it,i)=>c[status(g(sname+'|'+(i+1)))]++);return c}
-function show(v){if(v=='home'&&!prof())v='reg';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';if(v=='exam')renderExam();foot.hidden=v=='reg';
+function show(v){if(v=='home'&&!prof())v='reg';vshare.hidden=v!='share';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';if(v=='exam')renderExam();foot.hidden=v=='reg'||v=='share';
  if(v=='home')renderHome();if(v=='det')render();if(v=='reg'){const p=prof()||{};rname.value=p.name||'';rstudio.value=p.studio||'';regPhoto=p.photo||null;rpmsg.textContent='';rprev.innerHTML=avatar(regPhoto)}window.scrollTo(0,0)}
 function editProfile(){show('reg')}
 regf.onsubmit=e=>{e.preventDefault();const n=rname.value.trim();if(!n)return;st.__p={name:n,studio:rstudio.value.trim(),photo:regPhoto||''};save();show('home')}
@@ -240,7 +256,7 @@ function renderExam(){const e=ex();edate.value=e.date;const n=daysLeft(e.date),c
  ebar.innerHTML=`<div class="g" style="width:${tot?rd/tot*100:0}%"></div>`;
  elist.innerHTML=tot?e.items.map(k=>{const it=findIt(k);if(!it)return'';const s=g(k),r=!!e.ready[k];
   return `<div class="eitem ${r?'rd':''}"><div class="ic">${icon(k,it[1],r?'var(--done-ic)':'var(--prac-ic)')}</div><div class="bd" style="flex:1;min-width:0">
-  <div class="t">${it[1]}</div><small>${k.split('|')[0]}<span class="sp ${status(s)}">${LBL[status(s)]}</span> · ฝึกแล้ว ${s.pr.length} ครั้ง${s.pr.length?' · ล่าสุด '+s.pr[s.pr.length-1]:''}</small>
+  <div class="t">${it[1]}</div><small>${k.split('|')[0]}${pills(s)} · ฝึกแล้ว ${s.pr.length} ครั้ง${s.pr.length?' · ล่าสุด '+s.pr[s.pr.length-1]:''}</small>
   <div class="row"><button class="chip ${r?'on':''}" onclick="exReady('${k}')">${r?'✓ พร้อมสอบ':'○ ยังต้องซ้อม'}</button><button class="chip p" onclick="pr('${k}');renderExam()">💪 ฝึกวันนี้</button></div></div>
   <button class="x" aria-label="เอาออก" onclick="exToggle('${k}')">×</button></div>`}).join(''):`<p class="empty">${CORGI_FACE}กด "เลือกท่าที่จะสอบ" เพื่อเพิ่มท่าเข้าลิสต์</p>`}
 edate.onchange=()=>{ex().date=edate.value;save();renderExam()}
@@ -252,12 +268,12 @@ function pickList(){const sec=D[psec.value||0],e=ex(),F=[['','ทั้งหม
  const cnt={'':0,done:0,prac:0,todo:0};sec.items.forEach((it,i)=>{const s=status(g(sec.s+'|'+(i+1)));if(s!='skip'){cnt[s]++;cnt['']++}});
  pf.innerHTML=F.map(f=>`<button type="button" class="${pickF==f[0]?'on':''}" onclick="pickF='${f[0]}';pickList()">${f[2]?`<i style="background:${f[2]}"></i>`:''}${f[1]} ${cnt[f[0]]}</button>`).join('');
  const html=sec.items.map((it,i)=>{const k=sec.s+'|'+(i+1),stt=status(g(k));if(stt=='skip'||(pickF&&stt!=pickF))return'';
- return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}</small></span><span class="sp ${stt}">${LBL[stt]}</span></label>`}).join('');plist.innerHTML=html||'<p class="empty">ไม่มีท่าในสถานะนี้</p>'}
+ return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}</small></span>${pills(g(k))}</label>`}).join('');plist.innerHTML=html||'<p class="empty">ไม่มีท่าในสถานะนี้</p>'}
 psec.onchange=pickList;
 function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 เตรียมสอบ Polestar Pilates${p.name?' – '+p.name:''}\n`;
  if(e.date)t+=`📅 วันสอบ ${fmtD(e.date)}${n>0?` (อีก ${n} วัน)`:n==0?' (วันนี้)':''}\n`;
  const rd=e.items.filter(k=>e.ready[k]);t+=`พร้อมแล้ว ${rd.length}/${e.items.length} ท่า\n`;
- const line=k=>{const it=findIt(k),s=g(k);return `• ${it[1]} [${k.split('|')[0]}] ฝึก ${s.pr.length} ครั้ง${s.n?' – '+s.n:''}`};
+ const line=k=>{const it=findIt(k),s=g(k);return `• ${it[1]} [${k.split('|')[0]}] ปฏิบัติ ${s.d?'✓':'✗'} สอน ${s.t?'✓':'✗'} · ฝึก ${s.pr.length} ครั้ง${s.n?' – '+s.n:''}`};
  const todo=e.items.filter(k=>!e.ready[k]);
  if(rd.length)t+=`\n✅ พร้อมสอบ\n`+rd.map(line).join('\n')+'\n';if(todo.length)t+=`\n⏳ ยังต้องซ้อม\n`+todo.map(line).join('\n')+'\n';return t.trim()}
 function copyExam(){const t=examText();copybox.hidden=false;copyout.value=t;copymsg.textContent='';
@@ -272,6 +288,27 @@ function loadPhoto(file,cb){if(!file)return cb(null);const fr=new FileReader();f
 rphoto.onchange=()=>loadPhoto(rphoto.files[0],d=>{rpmsg.textContent=d?'':'เปิดรูปนี้ไม่ได้ ลองเลือกรูปอื่น';if(d){regPhoto=d;rprev.innerHTML=avatar(d)}rphoto.value=''});
 rcorgi.onclick=()=>{regPhoto=null;rpmsg.textContent='';rprev.innerHTML=CORGI_FACE};
 hphoto.onchange=()=>loadPhoto(hphoto.files[0],d=>{if(d&&prof()){st.__p.photo=d;save();renderHome()}hphoto.value=''});
+
+function pills(s){return `<span class="pills"><span class="sk2 ${s.d?'ok':'no'}">${s.d?'✓':'✗'} ปฏิบัติ</span><span class="sk2 ${s.t?'ok':'no'}">${s.t?'✓':'✗'} สอน</span></span>`}
+function b64e(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function b64d(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return JSON.parse(decodeURIComponent(escape(atob(s))))}
+function todayISO(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function summaryData(){const p=prof()||{};return {v:1,n:p.name||'',d:todayISO(),L:D.map(s=>{const c=counts(s.items,s.s);return [c.done,c.prac,s.items.length-c.skip]})}}
+function drawSummary(o,el){let T={done:0,prac:0,tot:0};
+ el.secs.innerHTML=D.map((s,i)=>{const L=o.L[i]||[0,0,0],tot=L[2],pg=tot?L[0]/tot*100:0,py=tot?L[1]/tot*100:0;T.done+=L[0];T.prac+=L[1];T.tot+=tot;
+  return `<div class="secrow ro"><span class="n">${s.s}</span><span class="pc">${Math.round(pg)}%</span><span class="sb"><span class="g" style="width:${pg}%"></span><span class="y" style="width:${py}%"></span></span><small>ผ่าน ${L[0]} · กำลังฝึก ${L[1]} · เหลือ ${tot-L[0]-L[1]} จาก ${tot} ท่า</small></div>`}).join('');
+ const a=T.tot?T.done/T.tot*100:0,b=T.tot?T.prac/T.tot*100:0,r=15.9155;el.pc.textContent=Math.round(a)+'%';
+ el.dn.innerHTML=`<circle cx="21" cy="21" r="${r}" fill="none" stroke="var(--chip)" stroke-width="6"/><circle cx="21" cy="21" r="${r}" fill="none" stroke="#facc15" stroke-width="6" stroke-dasharray="${a+b} ${100-a-b}"/><circle cx="21" cy="21" r="${r}" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="${a} ${100-a}"/>`;
+ el.stats.innerHTML=[['#22c55e','สอบผ่าน',T.done],['#facc15','กำลังฝึก',T.prac],['var(--chip)','ยังไม่เริ่ม',T.tot-T.done-T.prac]].map(x=>`<div class="stat"><i style="background:${x[0]}"></i>${x[1]}<b>${x[2]} ท่า</b></div>`).join('')+`<div class="stat" style="color:var(--muted)">รวม<b>${T.tot} ท่า</b></div>`}
+function shareProgress(){const p=prof();if(!p)return;const url=location.origin+location.pathname+'#share='+b64e(summaryData());
+ sharebox.hidden=false;shareout.value=url;sharemsg.textContent='';
+ const copy=()=>navigator.clipboard.writeText(url).then(()=>sharemsg.textContent='คัดลอกลิงก์แล้ว นำไปวางในแชตได้เลย',()=>{shareout.select();sharemsg.textContent='กดค้างที่ลิงก์แล้วเลือกคัดลอก'});
+ if(navigator.share)navigator.share({title:'ความคืบหน้า Polestar ของ '+p.name,url}).catch(copy);else copy()}
+function openShare(){const m=location.hash.match(/^#share=([\w-]+)$/);if(!m)return false;let o;try{o=b64d(m[1])}catch(e){return false}if(!o||!Array.isArray(o.L))return false;
+ shn.textContent=o.n?'ความคืบหน้าของ '+o.n:'ความคืบหน้า';shd.textContent=o.d?'อัปเดตเมื่อ '+fmtD(o.d):'';sav.innerHTML=CORGI_FACE;
+ drawSummary(o,{secs:ssecs,pc:sdpc,dn:sdn,stats:sstats});show('share');return true}
+function leaveShare(){try{history.replaceState(null,'',location.pathname)}catch(e){location.hash=''}show('home')}
+window.addEventListener('hashchange',()=>{if(!openShare()&&!vshare.hidden)show('home')});
 function tg(k,f){g(k)[f]=!g(k)[f];save();render()}
 function pr(k){g(k).pr.push(today());save();render()}
 function up(k){g(k).pr.pop();save();render()}
@@ -285,6 +322,6 @@ function panel(m){const p=document.getElementById('panel');p.hidden=!m;if(!m)ret
  ok.onclick=()=>{if(m=='exp'){navigator.clipboard.writeText(ta.value).then(()=>msg.textContent='คัดลอกแล้ว',()=>{ta.select();msg.textContent='กดค้างที่ข้อความแล้วเลือกคัดลอก'})}
   else if(m=='imp'){try{st=JSON.parse(ta.value);migrate();save();show('home');panel()}catch(e){msg.textContent='ข้อความไม่ถูกต้อง ลองคัดลอกมาใหม่ทั้งหมด'}}
   else{const p=st.__p;st=p?{__p:p}:{};save();show(vdet.hidden?'home':'det');panel()}}}
-fs.onchange=render;document.getElementById('q').oninput=render;regc.innerHTML=CORGI_FACE.replace('<svg ','<svg class="corgi-reg" ');walk.innerHTML=CORGI_FACE;show('home');
+fs.onchange=render;document.getElementById('q').oninput=render;regc.innerHTML=CORGI_FACE.replace('<svg ','<svg class="corgi-reg" ');walk.innerHTML=CORGI_FACE;if(!openShare())show('home');
 </script>
 </body></html>

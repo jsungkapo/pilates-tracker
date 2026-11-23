@@ -123,6 +123,28 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 #sharebox{width:100%;background:var(--surface);border-radius:14px;padding:12px;box-shadow:0 2px 8px #0001}#sharebox .hint,#sharemsg{margin:0 0 6px;font-size:12px;color:var(--muted)}#sharemsg{color:var(--accent2);margin:6px 0 0}
 #shareout{width:100%;font-size:12px}
 .secrow.ro{cursor:default}
+
+.esub{margin:6px 0 0;font-size:12.5px;opacity:.92;line-height:1.45}.esub2{margin:0 0 8px;font-size:12px;color:var(--muted)}
+.ttog{display:flex;gap:6px;margin:0 0 10px}.ttog button{flex:1;border:0;border-radius:10px;padding:8px;font:600 13px var(--font);background:#ffffff2e;color:#fff;cursor:pointer}.ttog button.on{background:#fff;color:var(--accent)}
+.tsum{padding:4px 0 12px;border-bottom:1px solid var(--line);margin-bottom:12px}.tsum:last-of-type{border-bottom:0;margin-bottom:4px}
+.th{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:13px;font-variant-numeric:tabular-nums}
+.tb{font-size:13px;padding:3px 10px;border-radius:8px;color:#fff;background:var(--accent)}.tb.t{background:#b7791f}
+.bar2{height:12px;border-radius:7px;background:var(--chip);overflow:hidden;display:flex}.bar2 .g{background:#22c55e}.bar2 .pl{background:#93c5fd}
+.tsum small{display:block;color:var(--muted);font-size:12px;margin-top:5px}
+.verdict{margin:6px 0 0;font-size:13px;line-height:1.45;padding:7px 10px;border-radius:10px}.verdict.ok{background:var(--done);color:#14532d}.verdict.warn{background:#fff7e6;color:#8a5300}
+.legend2{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted)}.legend2 i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px;background:var(--chip)}.legend2 i.g{background:#22c55e}.legend2 i.pl{background:#93c5fd}
+.cd.tt{background:linear-gradient(140deg,#b7791f,#e0a84a)}
+.exw{margin-top:10px}.exw.past{opacity:.6}.exw .examcard small{line-height:1.5}
+.gcard{background:var(--surface);border-radius:16px;margin-top:10px;box-shadow:0 2px 6px #0001;overflow:hidden}
+.gcard summary{list-style:none;display:flex;align-items:center;gap:8px;padding:12px 14px;cursor:pointer}.gcard summary::-webkit-details-marker{display:none}
+.gcard summary::after{content:"›";font-size:20px;color:var(--accent);transition:transform .2s}.gcard[open] summary::after{transform:rotate(90deg)}
+.gcard .gn{flex:1;min-width:0;font-weight:700;font-size:14px}.gcard .gn small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.gcard summary .pills{flex-direction:column;align-items:stretch;margin:0}.gcard summary .pills .sk2{text-align:center}
+.gi{display:flex;gap:8px;align-items:center;padding:8px 14px;border-top:1px solid var(--line)}.gi .pn{flex:1;min-width:0;font-size:13px;overflow-wrap:anywhere}.gi .pn small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.gi select{flex:0 0 112px;font-size:16px!important;padding:6px;border-radius:8px}
+.gcard .tools,.gcard .empty{padding:0 14px 12px}
+.gadd{display:flex;gap:8px;margin-top:14px}.gadd input{flex:1}.gadd button,.tools .danger{border:0;border-radius:12px;padding:9px 14px;font:600 13px var(--font);cursor:pointer;background:var(--surface);color:var(--accent);box-shadow:0 1px 3px #0002}
+.tools .danger{color:#b91c1c;margin-top:10px}
 [hidden]{display:none!important}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -133,7 +155,7 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 <label for="rstudio">สตูดิโอ / รุ่น (ไม่ใส่ก็ได้)<input id="rstudio" placeholder="เช่น Comprehensive 2026"></label>
 <button type="submit">เริ่มใช้งาน</button></form></section>
 <section id="vhome" hidden><div class="hero"><label class="av" id="hav" for="hphoto" title="แตะเพื่อเปลี่ยนรูป"></label><input type="file" id="hphoto" accept="image/*" class="sr" aria-label="เปลี่ยนรูปโปรไฟล์"><div><h1 id="hname"></h1><p id="hstudio"></p></div><button onclick="editProfile()">แก้ไข</button></div>
-<div class="panel2"><button class="examcard" onclick="show('exam')"><span class="cd"><b id="hcd">–</b><span id="hcdl">วัน</span></span><span class="ex"><b>เตรียมสอบครั้งต่อไป</b><small id="hexs"></small></span><span class="go">›</span></button></div>
+<div class="panel2"><button class="examcard" onclick="show('plan')"><span class="cd"><b id="hcd">–</b><span id="hcdl">วัน</span></span><span class="ex"><b>แผนสอบ</b><small id="hexs"></small></span><span class="go">›</span></button></div>
 <div class="panel2"><h2>ภาพรวมทั้งหมด</h2><div class="overall"><div class="donut"><svg viewBox="0 0 42 42" id="dn"></svg><div class="mid"><b id="dpc"></b><span>สอบผ่าน</span></div></div>
 <div class="stats" id="dstats"></div></div></div>
 <div class="panel2"><h2>Level</h2><div id="secs"></div></div>
@@ -151,14 +173,30 @@ input[type=date]{min-width:0;display:block;width:100%;-webkit-appearance:none;ap
 <div class="filters"><select id="fs"><option value="">ทุกสถานะ</option><option value="todo">ยังไม่เริ่ม</option><option value="prac">กำลังฝึก</option><option value="done">สอบผ่าน</option></select><input id="q" placeholder="ค้นหาท่า..."></div>
 <div id="list"></div>
 </section>
+<section id="vplan" hidden>
+<div class="ehead"><button class="back" onclick="show('home')">หน้าแรก</button><h1>แผนสอบ</h1>
+<div class="erow"><label for="pdl">เส้นตาย (สอบให้ครบภายใน)<input type="date" id="pdl"></label><div class="ecd"><b id="pcd">–</b><span id="pcdl"></span></div></div></div>
+<div class="panel2" id="psum"></div>
+<div class="tools"><button class="pri" onclick="newExam()">+ เพิ่มวันสอบ</button><button onclick="show('groups')">จัดกลุ่มท่า</button></div>
+<div id="exlist"></div>
+</section>
+<section id="vgroups" hidden>
+<div class="ehead"><button class="back" onclick="show('plan')">แผนสอบ</button><h1>กลุ่มท่า</h1><p class="esub">แอปจัดท่าที่คล้ายกันข้ามอุปกรณ์ไว้ให้ เปิดกลุ่มแล้วเลือกชื่อกลุ่มใต้ท่าเพื่อย้ายท่าได้</p></div>
+<div id="glist"></div>
+<div class="gadd"><input id="gnew" placeholder="ชื่อกลุ่มใหม่" maxlength="40"><button onclick="addGroup()">+ สร้างกลุ่ม</button></div>
+<div class="tools"><button id="greset" onclick="resetGroups()">คืนค่ากลุ่มเริ่มต้น</button></div>
+</section>
 <section id="vexam" hidden>
-<div class="ehead"><button class="back" onclick="show('home')">หน้าแรก</button><h1>เตรียมสอบครั้งต่อไป</h1>
+<div class="ehead"><button class="back" onclick="show('plan')">แผนสอบ</button><h1>วันสอบ</h1>
+<div class="ttog" id="etype"></div>
 <div class="erow"><label for="edate">วันสอบ<input type="date" id="edate"></label><div class="ecd"><b id="ecd">–</b><span id="ecdl">ยังไม่ได้ตั้งวันสอบ</span></div></div>
 <div class="ebar"><small id="esum"></small><div class="bar" id="ebar"></div></div></div>
-<div class="tools"><button class="pri" onclick="pickOpen()">+ เลือกท่าที่จะสอบ</button><button onclick="copyExam()">คัดลอกเป็นข้อความ</button></div>
+<div class="tools"><button class="pri" onclick="gpickOpen()">+ เลือกทั้งกลุ่ม</button><button class="pri" onclick="pickOpen()">+ เลือกทีละท่า</button><button onclick="copyExam()">คัดลอกเป็นข้อความ</button></div>
+<div class="pick" id="gpick" hidden><p class="esub2" id="gpnote"></p><div class="picklist" id="gplist"></div><div class="tools"><button class="pri" onclick="gpick.hidden=true">เสร็จแล้ว</button></div></div>
 <div class="pick" id="pick" hidden><select id="psec"></select><div class="pf" id="pf"></div><div class="picklist" id="plist"></div><div class="tools"><button class="pri" onclick="pick.hidden=true">เสร็จแล้ว</button></div></div>
 <div id="copybox" hidden><textarea id="copyout" readonly></textarea><p id="copymsg"></p></div>
 <div id="elist"></div>
+<div class="tools"><button class="danger" id="edel" onclick="delExam()">ลบวันสอบนี้</button></div>
 </section>
 <div class="foot" id="foot"><button onclick="panel('exp')">สำรองข้อมูล</button><button onclick="panel('imp')">นำเข้าข้อมูล</button><button onclick="panel('reset')">ล้างข้อมูล</button></div>
 </div>
@@ -173,10 +211,12 @@ let st=null;try{st=JSON.parse(localStorage.getItem(K)||'null')}catch(e){}
 if(!st){st={};for(const k in P){const p=P[k];st[k]={d:!!p[0],t:!!p[1],n:p[2]||'',sk:!!p[3],pr:[]}}save()}
 
 let cur=0,eqf='';function save(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
-function migrate(){if((st.__v||1)>=2)return;const S='R/S-Advanced 1|',mv=k=>{if(!k.startsWith(S))return k;const n=+k.slice(S.length);return n<8?k:n==8?null:S+(n-1)};
+function migrate2(){if((st.__v||1)>=2)return;const S='R/S-Advanced 1|',mv=k=>{if(!k.startsWith(S))return k;const n=+k.slice(S.length);return n<8?k:n==8?null:S+(n-1)};
  if(!st[S+7]&&st[S+8])st[S+7]=st[S+8];const ns={};for(const k in st){if(k.startsWith('__')){ns[k]=st[k];continue}const m=mv(k);if(m)ns[m]=st[k]}st=ns;
  if(st.__e){st.__e.items=[...new Set((st.__e.items||[]).map(mv).filter(Boolean))];const r={};for(const k in (st.__e.ready||{})){const m=mv(k);if(m)r[m]=st.__e.ready[k]}st.__e.ready=r}
  st.__v=2;save()}
+function migrate3(){if((st.__v||1)>=3)return;const e=st.__e;if(e&&((e.items||[]).length||e.date))plan().ex.push({id:'e'+Date.now(),date:e.date||'',type:'d',items:e.items||[],ready:e.ready||{}});delete st.__e;st.__v=3;save()}
+function migrate(){migrate2();migrate3()}
 migrate();
 function g(k){return st[k]||(st[k]={d:false,t:false,n:'',sk:false,pr:[]})}
 function status(s){if(s.sk)return'skip';if(s.d&&s.t)return'done';if(s.d||s.t||s.pr.length)return'prac';return'todo'}
@@ -230,11 +270,11 @@ for(const k in POSE)POSE[k]=POSE[k].replace(/<circle cx="(\d+)" cy="(\d+)" r="7"
 for(const k in POSE)POSE[k]=POSE[k].replace(/(<g [^>]*>)([^<]+)(<\/g>)/,'$1<path d="$2"/>$3');
 function prof(){return st.__p||null}
 function counts(items,sname){const c={done:0,prac:0,todo:0,skip:0};items.forEach((it,i)=>c[status(g(sname+'|'+(i+1)))]++);return c}
-function show(v){if(v=='home'&&!prof())v='reg';vshare.hidden=v!='share';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';if(v=='exam')renderExam();foot.hidden=v=='reg'||v=='share';
+function show(v){if(v=='home'&&!prof())v='reg';vshare.hidden=v!='share';vreg.hidden=v!='reg';vhome.hidden=v!='home';vdet.hidden=v!='det';vexam.hidden=v!='exam';vplan.hidden=v!='plan';vgroups.hidden=v!='groups';if(v=='exam')renderExam();if(v=='plan')renderPlan();if(v=='groups')renderGroups();foot.hidden=v=='reg'||v=='share';
  if(v=='home')renderHome();if(v=='det')render();if(v=='reg'){const p=prof()||{};rname.value=p.name||'';rstudio.value=p.studio||'';regPhoto=p.photo||null;rpmsg.textContent='';rprev.innerHTML=avatar(regPhoto)}window.scrollTo(0,0)}
 function editProfile(){show('reg')}
 regf.onsubmit=e=>{e.preventDefault();const n=rname.value.trim();if(!n)return;st.__p={name:n,studio:rstudio.value.trim(),photo:regPhoto||''};save();show('home')}
-function renderHome(){{const e=ex(),n=daysLeft(e.date),c=cdText(n);hcd.textContent=c[0];hcdl.textContent=n>0?'วัน':c[1];const rd=e.items.filter(k=>e.ready[k]).length;hexs.textContent=e.items.length?`${e.date?'สอบ '+fmtD(e.date)+' · ':''}พร้อม ${rd}/${e.items.length} ท่า`:'ตั้งวันสอบและเลือกท่าที่จะสอบ'}const p=prof();hname.textContent=p.name;hav.innerHTML=avatar(p.photo)+CAM;hstudio.textContent=p.studio||'Polestar Pilates · Comprehensive';
+function renderHome(){{const P=plan(),n=daysLeft(P.dl),K=allKeys(),dd=K.filter(k=>g(k).d).length,tt=K.filter(k=>g(k).t).length,nx=nextExam();hcd.textContent=n==null?'–':Math.max(n,0);hcdl.textContent=n<0?'เลยเส้นตาย':'วันถึงเส้นตาย';hexs.textContent=`ปฏิบัติ ${dd}/${K.length} · สอน ${tt}/${K.length}`+(nx?` · สอบถัดไป ${fmtD(nx.date)} (${nx.type=='t'?'สอน':'ปฏิบัติ'})`:' · ยังไม่มีวันสอบ')}const p=prof();hname.textContent=p.name;hav.innerHTML=avatar(p.photo)+CAM;hstudio.textContent=p.studio||'Polestar Pilates · Comprehensive';
  let T={done:0,prac:0,todo:0,skip:0};
  secs.innerHTML=D.map((s,i)=>{const c=counts(s.items,s.s);for(const k in T)T[k]+=c[k];const tot=s.items.length-c.skip,pg=tot?c.done/tot*100:0,py=tot?c.prac/tot*100:0;
   return `<button class="secrow" onclick="cur=${i};eqf='';show('det')"><span class="n">${s.s}</span><span class="pc">${Math.round(pg)}%</span>
@@ -246,12 +286,15 @@ function renderHome(){{const e=ex(),n=daysLeft(e.date),c=cdText(n);hcd.textConte
  <circle cx="21" cy="21" r="${r}" fill="none" stroke="#22c55e" stroke-width="6" stroke-dasharray="${a} ${100-a}"/>`;
  dstats.innerHTML=[['#22c55e','สอบผ่าน',T.done],['#facc15','กำลังฝึก',T.prac],['var(--chip)','ยังไม่เริ่ม',T.todo]].map(x=>`<div class="stat"><i style="background:${x[0]}"></i>${x[1]}<b>${x[2]} ท่า</b></div>`).join('')+`<div class="stat" style="color:var(--muted)">รวม<b>${tot} ท่า</b></div>`}
 
-function ex(){return st.__e||(st.__e={date:'',items:[],ready:{}})}
+let curEx=null;
+function ex(){return plan().ex.find(e=>e.id==curEx)||null}
 function findIt(k){const[s,n]=k.split('|');const sec=D.find(x=>x.s==s);return sec?sec.items[n-1]:null}
 function daysLeft(d){if(!d)return null;const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(d+'T00:00:00')-t)/864e5)}
 function fmtD(d){const[y,m,dd]=d.split('-');return `${+dd}/${+m}/${y}`}
 function cdText(n){return n==null?['–','ยังไม่ตั้งวัน']:n>0?[n,'วันก่อนสอบ']:n==0?['วันนี้','วันสอบ']:[-n,'วันที่ผ่านมาแล้ว']}
-function renderExam(){const e=ex();edate.value=e.date;const n=daysLeft(e.date),c=cdText(n);ecd.textContent=c[0];ecdl.textContent=e.date?(n>0?'วันก่อนสอบ · '+fmtD(e.date):c[1]+' · '+fmtD(e.date)):c[1];
+function renderExam(){const e=ex();if(!e){show('plan');return}edel.textContent='ลบวันสอบนี้';edel.dataset.c='';
+ etype.innerHTML=[['d','สอบปฏิบัติ'],['t','สอบสอน']].map(x=>`<button type="button" class="${e.type==x[0]?'on':''}" onclick="setType('${x[0]}')">${x[1]}</button>`).join('');
+ edate.value=e.date;const n=daysLeft(e.date),c=cdText(n);ecd.textContent=c[0];ecdl.textContent=e.date?(n>0?'วันก่อนสอบ · '+fmtD(e.date):c[1]+' · '+fmtD(e.date)):c[1];
  const rd=e.items.filter(k=>e.ready[k]).length,tot=e.items.length;esum.textContent=tot?`พร้อมแล้ว ${rd} จาก ${tot} ท่า`:'ยังไม่ได้เลือกท่า';
  ebar.innerHTML=`<div class="g" style="width:${tot?rd/tot*100:0}%"></div>`;
  elist.innerHTML=tot?e.items.map(k=>{const it=findIt(k);if(!it)return'';const s=g(k),r=!!e.ready[k];
@@ -259,9 +302,9 @@ function renderExam(){const e=ex();edate.value=e.date;const n=daysLeft(e.date),c
   <div class="t">${it[1]}</div><small>${k.split('|')[0]}${pills(s)} · ฝึกแล้ว ${s.pr.length} ครั้ง${s.pr.length?' · ล่าสุด '+s.pr[s.pr.length-1]:''}</small>
   <div class="row"><button class="chip ${r?'on':''}" onclick="exReady('${k}')">${r?'✓ พร้อมสอบ':'○ ยังต้องซ้อม'}</button><button class="chip p" onclick="pr('${k}');renderExam()">💪 ฝึกวันนี้</button></div></div>
   <button class="x" aria-label="เอาออก" onclick="exToggle('${k}')">×</button></div>`}).join(''):`<p class="empty">${CORGI_FACE}กด "เลือกท่าที่จะสอบ" เพื่อเพิ่มท่าเข้าลิสต์</p>`}
-edate.onchange=()=>{ex().date=edate.value;save();renderExam()}
+edate.onchange=()=>{const e=ex();if(e){e.date=edate.value;save();renderExam()}}
 function exReady(k){const e=ex();e.ready[k]=!e.ready[k];save();renderExam()}
-function exToggle(k){const e=ex(),i=e.items.indexOf(k);if(i<0)e.items.push(k);else{e.items.splice(i,1);delete e.ready[k]}save();renderExam();if(!pick.hidden)pickList()}
+function exToggle(k){const e=ex(),i=e.items.indexOf(k);if(i<0)e.items.push(k);else{e.items.splice(i,1);delete e.ready[k]}save();renderExam();if(!pick.hidden)pickList();if(!gpick.hidden)gpickList()}
 function pickOpen(){pick.hidden=false;psec.innerHTML=D.map((s,i)=>`<option value="${i}">${s.s}</option>`).join('');pickList()}
 let pickF='';
 function pickList(){const sec=D[psec.value||0],e=ex(),F=[['','ทั้งหมด',''],['done','สอบผ่าน','#22c55e'],['prac','กำลังฝึก','#facc15'],['todo','ยังไม่เริ่ม','#ef4444']];
@@ -270,7 +313,7 @@ function pickList(){const sec=D[psec.value||0],e=ex(),F=[['','ทั้งหม
  const html=sec.items.map((it,i)=>{const k=sec.s+'|'+(i+1),stt=status(g(k));if(stt=='skip'||(pickF&&stt!=pickF))return'';
  return `<label><input type="checkbox" id="pk${i}" ${e.items.includes(k)?'checked':''} onchange="exToggle('${k}')"><span class="pn">${i+1}. ${it[1]}<small>${it[0]}</small></span>${pills(g(k))}</label>`}).join('');plist.innerHTML=html||'<p class="empty">ไม่มีท่าในสถานะนี้</p>'}
 psec.onchange=pickList;
-function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 เตรียมสอบ Polestar Pilates${p.name?' – '+p.name:''}\n`;
+function examText(){const e=ex(),p=prof()||{},n=daysLeft(e.date);let t=`📋 ${e.type=='t'?'สอบสอน':'สอบปฏิบัติ'} Polestar Pilates${p.name?' – '+p.name:''}\n`;
  if(e.date)t+=`📅 วันสอบ ${fmtD(e.date)}${n>0?` (อีก ${n} วัน)`:n==0?' (วันนี้)':''}\n`;
  const rd=e.items.filter(k=>e.ready[k]);t+=`พร้อมแล้ว ${rd.length}/${e.items.length} ท่า\n`;
  const line=k=>{const it=findIt(k),s=g(k);return `• ${it[1]} [${k.split('|')[0]}] ปฏิบัติ ${s.d?'✓':'✗'} สอน ${s.t?'✓':'✗'} · ฝึก ${s.pr.length} ครั้ง${s.n?' – '+s.n:''}`};
@@ -309,6 +352,74 @@ function openShare(){const m=location.hash.match(/^#share=([\w-]+)$/);if(!m)retu
  drawSummary(o,{secs:ssecs,pc:sdpc,dn:sdn,stats:sstats});show('share');return true}
 function leaveShare(){try{history.replaceState(null,'',location.pathname)}catch(e){location.hash=''}show('home')}
 window.addEventListener('hashchange',()=>{if(!openShare()&&!vshare.hidden)show('home')});
+
+const GROUPS=[
+ ['footwork','Footwork & Leg Pump',/footwork|leg pump|achilles|jumping|tendon stretch/],
+ ['bridge','Bridging & Pelvic',/bridg|pelvic|hip extension/],
+ ['supine','Supine Basics',/dead bug|femur arcs|arm arcs|bent knee opening|side to side|breathing|90\/90|neural|supine stretch/],
+ ['straps','Feet in Straps & Leg Springs',/feet in straps|leg spring|leg circle|leg series|frog/],
+ ['abs','Abdominals & Teaser',/hundred|abdominal|chest lift|teaser|single leg stretch|double leg stretch|criss cross|backstroke/],
+ ['rolldown','Roll Down & Roll Up',/roll ?down|roll up|rolldown|back to forward bend|spine stretch/],
+ ['rolling','Rolling & Inversions',/rolling|rollover|corkscrew|seal|short spine|long spine|semi circle|hanging|shoulder stand|tower|monkey|magician/],
+ ['arms','Arm Series & Rowing',/arm series|pulling straps|rowing/],
+ ['scap','Push Through & Scapular',/triceps|scapular|pull down|push through|press up with handles|side arm twist|pull up/],
+ ['swan','Swan & Back Extension',/swan|dart|prone|parakeet|dolphin/],
+ ['kick','Swimming & Kicks',/swimming|grasshopper|leg kick|scarecrow/],
+ ['side','Side Bend & Mermaid',/mermaid|side sit up|lateral flexion|sidelying|sidekick|side lift/],
+ ['rot','Rotation',/spine twist|saw|book opening|twist|cleopatra/],
+ ['quad','Quadruped & Kneeling',/quadruped|knee stretch|kneeling|cat|elephant|long stretch|leg pull|push up|stomach massage/],
+ ['stand','Standing, Lunge & Splits',/lunge|stepdown|standing|squat|split|scooter|hip stretch|hip opener|thigh stretch|spread eagle|gymnast/],
+ ['box','Short Box & Hamstring',/short box|hamstring|leg stretch|horseback|climb a tree/]];
+const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function plan(){const P=st.__pl||(st.__pl={});if(!P.dl)P.dl='2027-05-31';P.gmap=P.gmap||{};P.gx=P.gx||[];P.ex=P.ex||[];return P}
+function defGroup(k){const it=findIt(k);if(!it)return'other';const n=it[1].toLowerCase();for(const G of GROUPS)if(G[2].test(n))return G[0];return'other'}
+function groupList(){return GROUPS.map(G=>({id:G[0],name:G[1]})).concat(plan().gx)}
+function groupName(id){const x=groupList().find(G=>G.id==id);return x?x.name:'อื่นๆ'}
+function groupOf(k){const m=plan().gmap[k];return m&&groupList().some(G=>G.id==m)?m:defGroup(k)}
+function allKeys(){const a=[];D.forEach(s=>s.items.forEach((it,i)=>{const k=s.s+'|'+(i+1);if(!(st[k]&&st[k].sk))a.push(k)}));return a}
+function passed(k,t){return !!(st[k]&&st[k][t])}
+function nextExam(){const t=todayISO();return plan().ex.filter(e=>e.date&&e.date>=t).sort((a,b)=>a.date<b.date?-1:1)[0]||null}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+pdl.onchange=()=>{if(pdl.value){plan().dl=pdl.value;save();renderPlan()}};
+function calc(t){const P=plan(),K=allKeys(),T=todayISO(),rem=K.filter(k=>!passed(k,t));
+ const live=P.ex.filter(e=>e.type==t&&(!e.date||(e.date>=T&&e.date<=P.dl)));const late=P.ex.filter(e=>e.type==t&&e.date&&e.date>P.dl).length;
+ const pl=new Set();live.forEach(e=>e.items.forEach(k=>pl.add(k)));
+ const un=rem.filter(k=>!pl.has(k)),gr=new Set(rem.map(groupOf)),ug=new Set(un.map(groupOf));
+ return {K:K.length,done:K.length-rem.length,rem:rem.length,remG:gr.size,plan:rem.length-un.length,un:un.length,unG:ug.size,late,sessions:live.length}}
+function renderPlan(){const P=plan(),n=daysLeft(P.dl);pdl.value=P.dl;pcd.textContent=n==null?'–':Math.abs(n);
+ pcdl.textContent=n<0?'วันที่เลยเส้นตายมาแล้ว':`วัน (≈ ${Math.ceil(n/7)} สัปดาห์) · ${fmtD(P.dl)}`;
+ const wk=Math.max(1,Math.ceil(Math.max(n,0)/7));
+ psum.innerHTML=[['d','สอบปฏิบัติ'],['t','สอบสอน']].map(([t,lab])=>{const c=calc(t),pd=c.K?c.done/c.K*100:0,pp=c.K?c.plan/c.K*100:0;let v,cls='warn';
+  if(!c.rem){v='🎉 ผ่านครบทุกท่าแล้ว';cls='ok'}else if(n<0){v='เลยเส้นตายแล้ว เลื่อนวันเส้นตายด้านบนได้'}else if(!c.un){v=`✓ วางแผนครบทุกท่าแล้ว ใน ${c.sessions} วันสอบ`;cls='ok'}
+  else v=`ยังไม่ได้วางแผน ${c.un} ท่า จาก ${c.unG} กลุ่ม · ถ้าสอบครั้งละ 1 กลุ่ม ต้องเพิ่มวันสอบอีก ${c.unG} ครั้ง ใน ${wk} สัปดาห์ (≈ ${(c.unG/wk).toFixed(1)} ครั้ง/สัปดาห์)`;
+  return `<div class="tsum"><div class="th"><b class="tb ${t}">${lab}</b><span>ผ่าน ${c.done}/${c.K} ท่า</span></div>
+  <div class="bar2"><span class="g" style="width:${pd}%"></span><span class="pl" style="width:${pp}%"></span></div>
+  <small>เหลือ ${c.rem} ท่า ใน ${c.remG} กลุ่ม · อยู่ในวันสอบที่วางไว้ ${c.plan} ท่า</small>
+  <p class="verdict ${cls}">${v}</p>${c.late?`<p class="verdict warn">มีวันสอบ ${c.late} ครั้งที่อยู่หลังเส้นตาย</p>`:''}</div>`}).join('')+
+  '<div class="legend2"><span><i class="g"></i>ผ่านแล้ว</span><span><i class="pl"></i>อยู่ในวันสอบที่วางไว้</span><span><i></i>ยังไม่ได้วางแผน</span></div>';
+ const T=todayISO(),L=[...P.ex].sort((a,b)=>(a.date||'9')<(b.date||'9')?-1:1);
+ exlist.innerHTML=L.length?L.map(e=>{const past=e.date&&e.date<T,d=e.date?e.date.split('-'):null,gs=[...new Set(e.items.map(groupOf))].map(groupName),nn=daysLeft(e.date),rd=e.items.filter(k=>e.ready[k]).length,pass=e.items.filter(k=>passed(k,e.type)).length;
+  return `<div class="panel2 exw ${past?'past':''}"><button class="examcard" onclick="openExam('${e.id}')"><span class="cd ${e.type=='t'?'tt':''}"><b>${d?+d[2]:'?'}</b><span>${d?TH_M[+d[1]-1]:'ไม่ระบุ'}</span></span><span class="ex"><b>${e.type=='t'?'สอบสอน':'สอบปฏิบัติ'}${e.date?' · '+fmtD(e.date):''}</b><small>${past?`ผ่านไปแล้ว · ผ่าน ${pass}/${e.items.length} ท่า`:(e.date?(nn==0?'วันนี้':`อีก ${nn} วัน`):'ยังไม่ระบุวัน')+` · ${e.items.length} ท่า · พร้อม ${rd}`}${gs.length?'<br>'+esc(gs.join(', ')):''}</small></span><span class="go">›</span></button></div>`}).join(''):`<p class="empty">${CORGI_FACE}ยังไม่มีวันสอบ กด "เพิ่มวันสอบ" เพื่อเริ่มวางแผน</p>`}
+function newExam(){const e={id:'e'+Date.now(),date:'',type:'d',items:[],ready:{}};plan().ex.push(e);save();curEx=e.id;pick.hidden=true;gpick.hidden=true;copybox.hidden=true;show('exam')}
+function openExam(id){curEx=id;pick.hidden=true;gpick.hidden=true;copybox.hidden=true;show('exam')}
+function setType(t){const e=ex();if(!e)return;e.type=t;save();renderExam();if(!gpick.hidden)gpickList()}
+function delExam(){if(edel.dataset.c!='1'){edel.dataset.c='1';edel.textContent='กดอีกครั้งเพื่อยืนยันการลบ';return}const P=plan();P.ex=P.ex.filter(e=>e.id!=curEx);curEx=null;save();show('plan')}
+function gpickOpen(){gpick.hidden=false;pick.hidden=true;gpickList()}
+function gpickList(){const e=ex();if(!e)return;const t=e.type,K=allKeys();gpnote.textContent=`เลือกกลุ่มแล้วแอปจะเพิ่มเฉพาะท่าที่ยังไม่ผ่าน${t=='t'?'การสอน':'ปฏิบัติ'}`;
+ gplist.innerHTML=groupList().map((G,i)=>{const rem=K.filter(k=>groupOf(k)==G.id&&!passed(k,t));if(!rem.length)return'';const inn=rem.filter(k=>e.items.includes(k)).length;
+  return `<label><input type="checkbox" id="gp${i}" ${inn==rem.length?'checked':''} onchange="gToggle('${G.id}')"><span class="pn">${esc(G.name)}<small>เหลือ ${rem.length} ท่า${inn&&inn<rem.length?` · เลือกแล้ว ${inn}`:''}</small></span></label>`}).join('')||'<p class="empty">ผ่านครบทุกกลุ่มแล้ว</p>'}
+function gToggle(gid){const e=ex(),rem=allKeys().filter(k=>groupOf(k)==gid&&!passed(k,e.type)),all=rem.every(k=>e.items.includes(k));
+ if(all)rem.forEach(k=>{const i=e.items.indexOf(k);if(i>=0){e.items.splice(i,1);delete e.ready[k]}});else rem.forEach(k=>{if(!e.items.includes(k))e.items.push(k)});save();renderExam();gpickList()}
+let gOpen=new Set();
+function renderGroups(){const K=allKeys(),L=groupList(),opts=L.map(G=>`<option value="${G.id}">${esc(G.name)}</option>`).join('');greset.textContent='คืนค่ากลุ่มเริ่มต้น';greset.dataset.c='';
+ glist.innerHTML=L.map(G=>{const ks=K.filter(k=>groupOf(k)==G.id),dd=ks.filter(k=>passed(k,'d')).length,tt=ks.filter(k=>passed(k,'t')).length,custom=!GROUPS.some(x=>x[0]==G.id);
+  return `<details class="gcard" ${gOpen.has(G.id)?'open':''} ontoggle="this.open?gOpen.add('${G.id}'):gOpen.delete('${G.id}')"><summary><span class="gn">${esc(G.name)}<small>${ks.length} ท่า</small></span><span class="pills"><span class="sk2 ${ks.length&&dd==ks.length?'ok':'no'}">ปฏิบัติ ${dd}/${ks.length}</span><span class="sk2 ${ks.length&&tt==ks.length?'ok':'no'}">สอน ${tt}/${ks.length}</span></span></summary>
+  ${ks.map((k,j)=>{const it=findIt(k);return `<div class="gi"><span class="pn">${esc(it[1])}<small>${k.split('|')[0]}${pills(g(k))}</small></span><select id="gs-${G.id}-${j}" aria-label="ย้ายไปกลุ่ม" onchange="moveTo('${k}',this.value)">${opts.replace(`value="${G.id}"`,`value="${G.id}" selected`)}</select></div>`}).join('')||'<p class="empty">ยังไม่มีท่าในกลุ่มนี้</p>'}
+  ${custom?`<div class="tools"><button onclick="delGroup('${G.id}')">ลบกลุ่มนี้</button></div>`:''}</details>`}).join('')}
+function moveTo(k,gid){const P=plan();if(gid==defGroup(k))delete P.gmap[k];else P.gmap[k]=gid;gOpen.add(gid);save();renderGroups()}
+function addGroup(){const n=gnew.value.trim();if(!n)return;const P=plan(),id='c'+Date.now();P.gx.push({id,name:n});gnew.value='';gOpen.add(id);save();renderGroups()}
+function delGroup(id){const P=plan();P.gx=P.gx.filter(G=>G.id!=id);for(const k in P.gmap)if(P.gmap[k]==id)delete P.gmap[k];save();renderGroups()}
+function resetGroups(){if(greset.dataset.c!='1'){greset.dataset.c='1';greset.textContent='กดอีกครั้งเพื่อยืนยัน';return}const P=plan();P.gmap={};P.gx=[];save();renderGroups()}
 function tg(k,f){g(k)[f]=!g(k)[f];save();render()}
 function pr(k){g(k).pr.push(today());save();render()}
 function up(k){g(k).pr.pop();save();render()}
